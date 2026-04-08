@@ -3,62 +3,340 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
-    <title>Stok KKP | Manajemen Inventory & Keuangan</title>
+    <title>Stok KKP | Manajemen Inventory Modern</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
-        body { background: #f0f2f8; padding: 20px; }
-        .app-container { max-width: 1400px; margin: 0 auto; }
-        
-        /* Modern card & button */
-        .card { background: #ffffff; border-radius: 28px; box-shadow: 0 12px 30px rgba(0,0,0,0.05); padding: 1.8rem; transition: all 0.2s; border: 1px solid rgba(203,213,225,0.3); }
-        button, .btn { background: #1e293b; border: none; color: white; padding: 10px 24px; border-radius: 44px; font-weight: 600; cursor: pointer; font-size: 0.85rem; display: inline-flex; align-items: center; gap: 10px; transition: 0.2s; }
-        button.primary { background: #2563eb; box-shadow: 0 2px 6px rgba(37,99,235,0.2); }
-        button.danger { background: #dc2626; }
-        button.success { background: #10b981; }
-        button.warning { background: #f59e0b; }
-        button.outline { background: white; border: 1px solid #cbd5e1; color: #1e293b; }
-        button:active { transform: scale(0.96); }
-        input, select { background: #f9fafb; border: 1px solid #e2e8f0; padding: 12px 18px; border-radius: 40px; width: 100%; font-size: 0.9rem; transition: 0.2s; }
-        input:focus { outline: none; border-color: #3b82f6; box-shadow: 0 0 0 3px rgba(59,130,246,0.1); }
-        
-        /* Navigation */
-        .navbar { background: white; border-radius: 60px; padding: 12px 28px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; margin-bottom: 28px; box-shadow: 0 4px 12px rgba(0,0,0,0.02); border: 1px solid #edf2f7; }
-        .logo-area { display: flex; align-items: center; gap: 12px; }
-        .logo-area i { font-size: 28px; color: #2563eb; }
-        .role-badge { background: #e0f2fe; color: #0369a1; padding: 6px 18px; border-radius: 40px; font-weight: 600; font-size: 0.8rem; }
-        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background: #f1f5f9;
+            min-height: 100vh;
+        }
+
+        /* ========== NAVBAR PROFESIONAL ========== */
+        .top-navbar {
+            background: white;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05), 0 1px 2px rgba(0,0,0,0.03);
+            padding: 0 32px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid #e9eef3;
+        }
+
+        .navbar-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 70px;
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            background: #2563eb;
+            width: 38px;
+            height: 38px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        .logo-text {
+            font-weight: 800;
+            font-size: 1.4rem;
+            letter-spacing: -0.3px;
+            background: linear-gradient(135deg, #1e293b, #2d3a4e);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .role-badge {
+            background: #e0f2fe;
+            color: #0369a1;
+            padding: 6px 16px;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-logout {
+            background: #f1f5f9;
+            border: none;
+            padding: 8px 18px;
+            border-radius: 40px;
+            font-weight: 500;
+            color: #475569;
+            cursor: pointer;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.8rem;
+        }
+
+        .btn-logout:hover {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+
+        /* ========== MAIN CONTENT ========== */
+        .main-content {
+            max-width: 1400px;
+            margin: 28px auto;
+            padding: 0 24px;
+        }
+
+        /* Back button */
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: white;
+            border: 1px solid #e2e8f0;
+            padding: 8px 20px;
+            border-radius: 40px;
+            font-weight: 500;
+            cursor: pointer;
+            margin-bottom: 24px;
+            transition: 0.2s;
+            color: #334155;
+        }
+
+        .back-button:hover {
+            background: #f8fafc;
+            border-color: #cbd5e1;
+        }
+
+        /* Card */
+        .card-modern {
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03), 0 1px 2px rgba(0,0,0,0.05);
+            overflow: hidden;
+            border: 1px solid #edf2f7;
+        }
+
+        .card-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid #f0f2f5;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .card-header h3 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #0f172a;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Tabel Stok - Desain Modern */
+        .table-container {
+            overflow-x: auto;
+        }
+
+        .stock-table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 800px;
+        }
+
+        .stock-table th {
+            text-align: left;
+            padding: 16px 16px;
+            background: #f8fafc;
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: #475569;
+            border-bottom: 1px solid #e9edf2;
+        }
+
+        .stock-table td {
+            padding: 16px 16px;
+            border-bottom: 1px solid #f0f2f5;
+            font-size: 0.9rem;
+            color: #1e293b;
+            vertical-align: middle;
+        }
+
+        .product-name {
+            font-weight: 700;
+            color: #0f172a;
+        }
+
+        .badge-cost {
+            background: #eef2ff;
+            padding: 5px 14px;
+            border-radius: 40px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: #2563eb;
+            display: inline-block;
+        }
+
+        .btn-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .btn-sm {
+            padding: 6px 14px;
+            font-size: 0.7rem;
+            border-radius: 30px;
+            font-weight: 500;
+            border: none;
+            cursor: pointer;
+            transition: 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-primary { background: #2563eb; color: white; }
+        .btn-warning { background: #f59e0b; color: white; }
+        .btn-success { background: #10b981; color: white; }
+        .btn-secondary { background: #64748b; color: white; }
+        .btn-outline { background: white; border: 1px solid #cbd5e1; color: #334155; }
+        .btn-sm:hover { transform: translateY(-1px); filter: brightness(0.95); }
+
         /* Grid menu */
-        .grid-menu { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 22px; margin-top: 20px; }
-        .menu-card { background: white; border-radius: 28px; padding: 1.6rem 0.8rem; cursor: pointer; text-align: center; border: 1px solid #eef2ff; transition: all 0.25s; box-shadow: 0 4px 10px rgba(0,0,0,0.02); }
-        .menu-card i { font-size: 2.2rem; color: #2563eb; margin-bottom: 12px; display: block; }
-        .menu-card span { font-weight: 600; font-size: 0.9rem; }
-        .menu-card:hover { transform: translateY(-5px); border-color: #2563eb; box-shadow: 0 20px 25px -12px rgba(0,0,0,0.1); background: #fefefe; }
-        
-        /* Tables */
-        .table-wrapper { overflow-x: auto; border-radius: 24px; }
-        table { width: 100%; border-collapse: collapse; min-width: 600px; }
-        th { text-align: left; padding: 16px 12px; background: #f8fafc; font-weight: 600; color: #1e293b; border-bottom: 1px solid #e2e8f0; }
-        td { padding: 14px 12px; border-bottom: 1px solid #f1f5f9; vertical-align: middle; }
-        .badge-avg { background: #eef2ff; padding: 5px 14px; border-radius: 40px; font-size: 0.75rem; font-weight: 500; color: #1e40af; display: inline-block; }
-        
-        /* Profit & Uang Masuk */
-        .profit-card { background: linear-gradient(135deg, #fffbeb, #fff7ed); border-left: 6px solid #f59e0b; }
-        .uang-item { background: #fafcff; border-radius: 24px; padding: 14px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; border: 1px solid #eef2ff; }
-        .flex-between { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
-        
-        /* Toast & Modal */
-        .toast { position: fixed; bottom: 25px; left: 50%; transform: translateX(-50%); background: #1e293b; color: white; padding: 12px 28px; border-radius: 60px; z-index: 1100; font-size: 0.85rem; animation: fadeUp 0.25s; box-shadow: 0 8px 20px rgba(0,0,0,0.2); }
-        @keyframes fadeUp { from { opacity: 0; transform: translateX(-50%) translateY(20px); } to { opacity: 1; transform: translateX(-50%) translateY(0); } }
-        .modal-backdrop { position: fixed; top:0; left:0; right:0; bottom:0; background: rgba(0,0,0,0.4); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; z-index: 1000; }
-        .modal-card { background: white; max-width: 500px; width: 90%; border-radius: 40px; padding: 28px; }
-        
-        @media (max-width: 640px) { body { padding: 12px; } .navbar { padding: 12px 18px; } .card { padding: 1.2rem; } .menu-card { padding: 1rem 0.5rem; } .menu-card i { font-size: 1.8rem; } }
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .menu-item {
+            background: white;
+            border-radius: 20px;
+            padding: 24px 16px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.25s;
+            border: 1px solid #edf2f7;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+        }
+
+        .menu-item i {
+            font-size: 2rem;
+            color: #2563eb;
+            margin-bottom: 12px;
+        }
+
+        .menu-item span {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .menu-item:hover {
+            transform: translateY(-4px);
+            border-color: #2563eb;
+            box-shadow: 0 12px 20px -12px rgba(0,0,0,0.12);
+        }
+
+        /* Uang Masuk item */
+        .uang-item {
+            background: #fafcff;
+            border-radius: 18px;
+            padding: 14px 18px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            border: 1px solid #eef2ff;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1e293b;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 60px;
+            font-size: 0.85rem;
+            z-index: 1100;
+            animation: fadeUp 0.25s;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateX(-50%) translateY(20px); }
+            to { opacity: 1; transform: translateX(-50%) translateY(0); }
+        }
+
+        .flex-between {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        input, select {
+            background: #f9fafb;
+            border: 1px solid #e2e8f0;
+            padding: 12px 18px;
+            border-radius: 40px;
+            font-size: 0.9rem;
+            width: 100%;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
+        }
+
+        @media (max-width: 768px) {
+            .top-navbar { padding: 0 16px; }
+            .main-content { padding: 0 16px; }
+            .navbar-container { height: 60px; }
+            .logo-text { font-size: 1.1rem; }
+            .stock-table th, .stock-table td { padding: 12px 12px; }
+            .btn-group { flex-direction: column; }
+            .btn-sm { justify-content: center; }
+        }
     </style>
 </head>
 <body>
-<div class="app-container" id="app"></div>
+
+<div id="app"></div>
 
 <script>
     // ======================== DATA STORE (Stok KKP) ========================
@@ -66,11 +344,11 @@
         users: [ { id: 1, username: "owner", password: "owner", role: "owner", status: "approved" } ],
         pendingRegistrations: [],
         inventory: [
-            { id: 101, nama: "Beras Premium 5kg", stock: 25, hargaJual: 75000, averageCost: 55000, purchaseHistory: [] },
-            { id: 102, nama: "Minyak Goreng 1L", stock: 40, hargaJual: 20000, averageCost: 14000, purchaseHistory: [] },
-            { id: 103, nama: "Gula Pasir 1kg", stock: 30, hargaJual: 18000, averageCost: 13000, purchaseHistory: [] },
-            { id: 104, nama: "Telur Ayam (1 papan)", stock: 15, hargaJual: 55000, averageCost: 45000, purchaseHistory: [] },
-            { id: 105, nama: "Tepung Terigu 1kg", stock: 22, hargaJual: 15000, averageCost: 10000, purchaseHistory: [] }
+            { id: 101, nama: "Beras Premium 5kg", stock: 25, hargaJual: 75000, averageCost: 55000 },
+            { id: 102, nama: "Minyak Goreng 1L", stock: 40, hargaJual: 20000, averageCost: 14000 },
+            { id: 103, nama: "Gula Pasir 1kg", stock: 30, hargaJual: 18000, averageCost: 13000 },
+            { id: 104, nama: "Telur Ayam (1 papan)", stock: 15, hargaJual: 55000, averageCost: 45000 },
+            { id: 105, nama: "Tepung Terigu 1kg", stock: 22, hargaJual: 15000, averageCost: 10000 }
         ],
         uangMasukList: [
             { id: 1, jumlah: 8750000, tanggal: "2026-04-01", keterangan: "Penjualan reguler" },
@@ -78,15 +356,13 @@
         ],
         biayaKonsumsi: 1250000,
         biayaOperasional: 800000,
-        // LOG TANPA login/logout, hanya aktivitas stok, modal, uang masuk, dll
         activityLogs: [ { id: 1, timestamp: new Date().toLocaleString(), username: "system", action: "Sistem Stok KKP siap digunakan" } ]
     };
 
-    function loadStore() { const s = localStorage.getItem("stok_kkp_data"); if(s) { try { const d=JSON.parse(s); store.users=d.users||store.users; store.pendingRegistrations=d.pendingRegistrations||[]; store.inventory=d.inventory||store.inventory; store.uangMasukList=d.uangMasukList||store.uangMasukList; store.biayaKonsumsi=d.biayaKonsumsi??1250000; store.biayaOperasional=d.biayaOperasional??800000; store.activityLogs=d.activityLogs||store.activityLogs; } catch(e){} } }
-    function saveStore() { localStorage.setItem("stok_kkp_data", JSON.stringify(store)); }
+    function loadStore() { const s = localStorage.getItem("stok_kkp_rapi"); if(s) { try { const d=JSON.parse(s); store.users=d.users||store.users; store.pendingRegistrations=d.pendingRegistrations||[]; store.inventory=d.inventory||store.inventory; store.uangMasukList=d.uangMasukList||store.uangMasukList; store.biayaKonsumsi=d.biayaKonsumsi??1250000; store.biayaOperasional=d.biayaOperasional??800000; store.activityLogs=d.activityLogs||store.activityLogs; } catch(e){} } }
+    function saveStore() { localStorage.setItem("stok_kkp_rapi", JSON.stringify(store)); }
     loadStore();
 
-    // Add activity (tanpa login/logout)
     function addActivity(username, action) { 
         const id = store.activityLogs.length ? Math.max(...store.activityLogs.map(l=>l.id)) + 1 : 1;
         store.activityLogs.push({ id, timestamp: new Date().toLocaleString('id-ID'), username, action });
@@ -97,7 +373,6 @@
 
     let currentUser = null, currentView = "login";
 
-    // Helper update average cost
     function updateAverageCost(item, newQty, newUnitCost) {
         const oldStock = item.stock;
         const oldAvg = item.averageCost;
@@ -111,18 +386,16 @@
         saveStore();
     }
 
-    // Reset Uang Masuk (hapus semua riwayat)
     function resetUangMasuk() {
-        if(confirm("⚠️ Reset semua data pemasukan? Aksi ini tidak dapat dibatalkan.")) {
+        if(confirm("⚠️ Reset semua data pemasukan? Aksi tidak dapat dibatalkan.")) {
             store.uangMasukList = [];
             saveStore();
             addActivity(currentUser.username, "Meriset seluruh data uang masuk");
-            toast("Semua data uang masuk telah direset");
+            toast("Data uang masuk direset");
             render();
         }
     }
 
-    // Render utama
     function render() {
         const app = document.getElementById("app");
         if(!currentUser) {
@@ -135,116 +408,144 @@
                 else if(currentView === "modalView") app.innerHTML = renderModal();
                 else if(currentView === "logActivityView") app.innerHTML = renderLog();
                 else if(currentView === "listKaryawanView") app.innerHTML = renderKaryawan();
-                else app.innerHTML = renderOwnerDash();
+                else app.innerHTML = renderOwnerDashboard();
             } else {
                 if(currentView === "stokView") app.innerHTML = renderStok();
                 else if(currentView === "uangMasukView") app.innerHTML = renderUangMasuk();
                 else if(currentView === "profitView") app.innerHTML = renderProfit();
-                else app.innerHTML = renderKaryawanDash();
+                else app.innerHTML = renderKaryawanDashboard();
             }
         }
         attachEvents();
     }
 
-    // ========== UI Components ==========
-    function renderLogin() { return `<div class="card" style="max-width:460px; margin:70px auto; text-align:center;"><div class="logo-area" style="justify-content:center;"><i class="fas fa-boxes"></i><h1 style="font-size:1.8rem;">Stok KKP</h1></div><p style="margin-bottom:28px; color:#475569;">Manajemen Stok & Keuangan</p><input id="loginUser" placeholder="Username" style="margin-bottom:16px;"><input id="loginPass" type="password" placeholder="Password" style="margin-bottom:24px;"><button id="btnLogin" class="primary" style="width:100%">Masuk <i class="fas fa-arrow-right"></i></button><p style="margin-top:24px;"><a href="#" id="gotoReg" style="color:#2563eb;">Daftar akun karyawan</a></p><div style="font-size:12px; margin-top:20px; color:#64748b;">Demo: owner / owner</div></div>`; }
-    function renderRegister() { return `<div class="card" style="max-width:460px; margin:50px auto;"><h2>Daftar Karyawan</h2><p style="color:#f59e0b; margin:12px 0;"><i class="fas fa-clock"></i> Menunggu persetujuan Owner</p><input id="regUser" placeholder="Username"><input id="regPass" type="password" placeholder="Password" style="margin:12px 0;"><input id="regConfirm" type="password" placeholder="Konfirmasi"><button id="btnReg" style="width:100%; margin-top:24px;">Kirim Pendaftaran</button><p style="margin-top:20px;"><a href="#" id="gotoLogin">Kembali Login</a></p></div>`; }
-    function renderOwnerDash() { const pCount = store.pendingRegistrations.length; return `<div class="navbar"><div class="logo-area"><i class="fas fa-boxes"></i><h2>Stok KKP</h2><span class="role-badge">Owner</span></div><button id="logoutBtn" class="outline"><i class="fas fa-sign-out-alt"></i> Logout</button></div><div class="grid-menu"><div class="menu-card" data-view="stokView"><i class="fas fa-cubes"></i><span>Stok Barang</span></div><div class="menu-card" data-view="uangMasukView"><i class="fas fa-coins"></i><span>Uang Masuk</span></div><div class="menu-card" data-view="profitView"><i class="fas fa-chart-line"></i><span>Profit</span></div><div class="menu-card" data-view="modalView"><i class="fas fa-hand-holding-usd"></i><span>Modal</span></div><div class="menu-card" data-view="logActivityView"><i class="fas fa-history"></i><span>Log Aktivitas</span></div><div class="menu-card" data-view="listKaryawanView"><i class="fas fa-users"></i><span>Karyawan ${pCount?`(${pCount})`:''}</span></div></div>`; }
-    function renderKaryawanDash() { return `<div class="navbar"><div class="logo-area"><i class="fas fa-boxes"></i><h2>Stok KKP</h2><span class="role-badge">Karyawan</span></div><button id="logoutBtn" class="outline">Logout</button></div><div class="grid-menu"><div class="menu-card" data-view="stokView"><i class="fas fa-cubes"></i><span>Stok Barang</span></div></div><div style="margin-top:20px; background:#f8fafc; border-radius:28px; padding:24px; text-align:center; color:#475569;">🔒 Menu lain hanya untuk owner</div>`; }
+    // ========== KOMPONEN UI ==========
+    function renderLogin() {
+        return `<div style="max-width:460px; margin:80px auto; background:white; border-radius:32px; padding:32px; text-align:center; box-shadow:0 20px 35px -12px rgba(0,0,0,0.1);">
+            <div class="logo-area" style="justify-content:center; margin-bottom:20px;"><div class="logo-icon"><i class="fas fa-boxes"></i></div><span class="logo-text">Stok KKP</span></div>
+            <p style="margin-bottom:28px; color:#475569;">Manajemen Stop & Keuangan Modern</p>
+            <input id="loginUser" placeholder="Username" style="margin-bottom:16px;"><input id="loginPass" type="password" placeholder="Password" style="margin-bottom:24px;">
+            <button id="btnLogin" style="background:#2563eb; width:100%; padding:12px; border:none; border-radius:40px; color:white; font-weight:600; cursor:pointer;">Masuk <i class="fas fa-arrow-right"></i></button>
+            <p style="margin-top:24px;"><a href="#" id="gotoReg" style="color:#2563eb;">Daftar akun karyawan</a></p>
+            <div style="font-size:12px; margin-top:20px;">Demo: owner / owner</div>
+        </div>`;
+    }
+    function renderRegister() {
+        return `<div style="max-width:460px; margin:60px auto; background:white; border-radius:32px; padding:32px;"><h2 style="margin-bottom:16px;">Daftar Karyawan</h2><p style="color:#f59e0b; margin-bottom:16px;"><i class="fas fa-clock"></i> Menunggu persetujuan Owner</p>
+        <input id="regUser" placeholder="Username" style="margin-bottom:12px;"><input id="regPass" type="password" placeholder="Password" style="margin-bottom:12px;"><input id="regConfirm" type="password" placeholder="Konfirmasi" style="margin-bottom:24px;">
+        <button id="btnReg" style="background:#2563eb; width:100%; padding:12px; border:none; border-radius:40px; color:white; font-weight:600;">Kirim Pendaftaran</button>
+        <p style="margin-top:20px;"><a href="#" id="gotoLogin">Kembali Login</a></p></div>`;
+    }
+    function renderOwnerDashboard() {
+        const pCount = store.pendingRegistrations.length;
+        return `
+        <div class="top-navbar"><div class="navbar-container"><div class="logo-area"><div class="logo-icon"><i class="fas fa-boxes"></i></div><span class="logo-text">Stok KKP</span></div><div class="nav-right"><span class="role-badge"><i class="fas fa-crown"></i> Owner</span><button id="logoutBtn" class="btn-logout"><i class="fas fa-sign-out-alt"></i> Logout</button></div></div></div>
+        <div class="main-content"><div class="menu-grid"><div class="menu-item" data-view="stokView"><i class="fas fa-cubes"></i><span>Stok Barang</span></div><div class="menu-item" data-view="uangMasukView"><i class="fas fa-coins"></i><span>Uang Masuk</span></div><div class="menu-item" data-view="profitView"><i class="fas fa-chart-line"></i><span>Profit</span></div><div class="menu-item" data-view="modalView"><i class="fas fa-hand-holding-usd"></i><span>Modal</span></div><div class="menu-item" data-view="logActivityView"><i class="fas fa-history"></i><span>Log Aktivitas</span></div><div class="menu-item" data-view="listKaryawanView"><i class="fas fa-users"></i><span>Karyawan ${pCount?`(${pCount})`:''}</span></div></div></div>`;
+    }
+    function renderKaryawanDashboard() {
+        return `<div class="top-navbar"><div class="navbar-container"><div class="logo-area"><div class="logo-icon"><i class="fas fa-boxes"></i></div><span class="logo-text">Stok KKP</span></div><div class="nav-right"><span class="role-badge"><i class="fas fa-id-badge"></i> Karyawan</span><button id="logoutBtn" class="btn-logout"><i class="fas fa-sign-out-alt"></i> Logout</button></div></div></div>
+        <div class="main-content"><div class="menu-grid"><div class="menu-item" data-view="stokView"><i class="fas fa-cubes"></i><span>Stok Barang</span></div></div><div style="margin-top:20px; background:#f8fafc; border-radius:24px; padding:24px; text-align:center;">🔒 Menu lainnya hanya untuk owner</div></div>`;
+    }
     
-    // STOK (tanpa kolom total modal)
+    // HALAMAN STOK dengan tabel modern
     function renderStok() {
-        return `<div class="navbar"><button id="backBtn" class="outline"><i class="fas fa-arrow-left"></i> Kembali</button><h3><i class="fas fa-warehouse"></i> Manajemen Stok</h3><button id="addBarangBtn" class="success"><i class="fas fa-plus"></i> Barang Baru</button></div>
-        <div class="card"><div class="table-wrapper"></table><thead><tr><th>Produk</th><th>Stok</th><th>Harga Jual</th><th>Modal Rata-rata</th><th>Aksi Stok</th><th>Update Modal</th></thead><tbody id="stokTbody"></tbody></table></div></div>`;
+        return `
+        <div class="top-navbar"><div class="navbar-container"><div class="logo-area"><div class="logo-icon"><i class="fas fa-boxes"></i></div><span class="logo-text">Stok KKP</span></div><div class="nav-right"><span class="role-badge">${currentUser?.role === "owner" ? "Owner" : "Karyawan"}</span><button id="logoutBtn" class="btn-logout"><i class="fas fa-sign-out-alt"></i> Logout</button></div></div></div>
+        <div class="main-content"><div class="back-button" id="backBtn"><i class="fas fa-arrow-left"></i> Kembali ke Dashboard</div>
+        <div class="card-modern"><div class="card-header"><h3><i class="fas fa-warehouse"></i> Manajemen Stok</h3><button id="addBarangBtn" class="btn-sm btn-success"><i class="fas fa-plus"></i> Tambah Barang</button></div>
+        <div class="table-container"><table class="stock-table"><thead><tr><th>Produk</th><th>Stok</th><th>Harga Jual</th><th>Modal Rata-rata</th><th>Aksi Stok</th><th>Update Modal / Harga</th></tr></thead><tbody id="stokTbody"></tbody></table></div></div></div>`;
     }
-    // UANG MASUK + TOMBOL RESET
+    
     function renderUangMasuk() {
-        return `<div class="navbar"><button id="backBtn" class="outline"><i class="fas fa-arrow-left"></i> Kembali</button><h3><i class="fas fa-coins"></i> Pemasukan</h3><button id="resetUangMasukBtn" class="danger"><i class="fas fa-trash-alt"></i> Reset Semua</button></div>
-        <div class="card"><div class="flex-between" style="margin-bottom:24px;"><input type="number" id="jumlahUM" placeholder="Nominal (Rp)" style="flex:2"><input type="date" id="tglUM" style="flex:1"><button id="tambahUMBtn" class="primary">Input</button></div><h4>📋 Riwayat Transaksi</h4><div id="daftarUangMasuk" style="max-height:380px; overflow-y:auto;"></div></div>`;
+        return `<div class="top-navbar"><div class="navbar-container"><div class="logo-area"><div class="logo-icon"><i class="fas fa-boxes"></i></div><span class="logo-text">Stok KKP</span></div><div class="nav-right"><span class="role-badge">${currentUser?.role === "owner" ? "Owner" : "Karyawan"}</span><button id="logoutBtn" class="btn-logout"><i class="fas fa-sign-out-alt"></i> Logout</button></div></div></div>
+        <div class="main-content"><div class="back-button" id="backBtn"><i class="fas fa-arrow-left"></i> Kembali</div>
+        <div class="card-modern"><div class="card-header"><h3><i class="fas fa-coins"></i> Pemasukan</h3><button id="resetUangMasukBtn" class="btn-sm" style="background:#dc2626; color:white;"><i class="fas fa-trash-alt"></i> Reset Semua</button></div>
+        <div style="padding:20px;"><div class="flex-between" style="margin-bottom:24px;"><input type="number" id="jumlahUM" placeholder="Nominal (Rp)" style="flex:2"><input type="date" id="tglUM" style="flex:1"><button id="tambahUMBtn" class="btn-sm btn-primary">Input</button></div>
+        <h4 style="margin-bottom:12px;">📋 Riwayat Transaksi</h4><div id="daftarUangMasuk" style="max-height:380px; overflow-y:auto;"></div></div></div></div>`;
     }
-    function renderProfit() { return `<div class="navbar"><button id="backBtn" class="outline"><i class="fas fa-arrow-left"></i> Kembali</button><h3>Profit Perminggu</h3><button id="generateProfitBtn" class="primary">Generate Laporan</button></div><div id="profitArea" class="card profit-card"></div><div class="card" style="margin-top:20px;"><h4>⚙️ Biaya Operasional Mingguan</h4><div class="flex-between"><div style="flex:1"><label>🍽️ Konsumsi</label><input type="number" id="konsumsiInput" value="${store.biayaKonsumsi}"></div><div style="flex:1"><label>⚙️ Operasional</label><input type="number" id="operasionalInput" value="${store.biayaOperasional}"></div><button id="setBiayaBtn" class="outline">Simpan</button></div></div>`; }
-    function renderModal() { return `<div class="navbar"><button id="backBtn" class="outline"><i class="fas fa-arrow-left"></i> Kembali</button><h3>Total Modal (Average Cost)</h3></div><div class="card"><div class="table-wrapper"><table><thead><tr><th>Nama Barang</th><th>Modal Rata-rata</th><th>Stok</th><th>Total Modal</th></tr></thead><tbody id="modalBody"></tbody></table></div><div id="totalModalAll" style="margin-top:24px; text-align:right; font-weight:800; font-size:1.3rem;"></div></div>`; }
-    function renderLog() { return `<div class="navbar"><button id="backBtn" class="outline"><i class="fas fa-arrow-left"></i> Kembali</button><h3>Log Aktivitas (Stok & Keuangan)</h3></div><div class="card"><div id="logContainer" style="max-height:500px; overflow-y:auto;"></div></div>`; }
-    function renderKaryawan() { const active = store.users.filter(u=>u.role==="karyawan" && u.status==="approved"); return `<div class="navbar"><button id="backBtn" class="outline"><i class="fas fa-arrow-left"></i> Kembali</button><h3>Manajemen Karyawan</h3><button id="showApprovalBtn" class="warning"><i class="fas fa-user-check"></i> Persetujuan (${store.pendingRegistrations.length})</button></div><div class="card"><h4>✅ Karyawan Aktif</h4><div class="table-wrapper"><table><thead><tr><th>Username</th><th>Aksi</th></tr></thead><tbody>${active.map(k=>`<tr><td>${k.username}</td><td><button class="resignBtn" data-id="${k.id}" class="danger">Resign</button></td></tr>`).join("")}</tbody></table></div></div><div id="pendingModal" style="display:none;"></div>`; }
+    function renderProfit() {
+        return `<div class="top-navbar"><div class="navbar-container"><div class="logo-area"><div class="logo-icon"><i class="fas fa-boxes"></i></div><span class="logo-text">Stok KKP</span></div><div class="nav-right"><span class="role-badge">${currentUser?.role === "owner" ? "Owner" : "Karyawan"}</span><button id="logoutBtn" class="btn-logout"><i class="fas fa-sign-out-alt"></i> Logout</button></div></div></div>
+        <div class="main-content"><div class="back-button" id="backBtn"><i class="fas fa-arrow-left"></i> Kembali</div>
+        <div class="card-modern"><div class="card-header"><h3><i class="fas fa-chart-line"></i> Profit Perminggu</h3><button id="generateProfitBtn" class="btn-sm btn-primary">Generate Laporan</button></div><div id="profitArea" style="padding:20px;"></div></div>
+        <div class="card-modern" style="margin-top:20px;"><div class="card-header"><h3>⚙️ Biaya Operasional Mingguan</h3></div><div style="padding:20px;"><div class="flex-between"><div style="flex:1"><label>🍽️ Konsumsi</label><input type="number" id="konsumsiInput" value="${store.biayaKonsumsi}"></div><div style="flex:1"><label>⚙️ Operasional</label><input type="number" id="operasionalInput" value="${store.biayaOperasional}"></div><button id="setBiayaBtn" class="btn-sm btn-outline">Simpan</button></div></div></div></div>`;
+    }
+    function renderModal() {
+        return `<div class="top-navbar"><div class="navbar-container"><div class="logo-area"><div class="logo-icon"><i class="fas fa-boxes"></i></div><span class="logo-text">Stok KKP</span></div><div class="nav-right"><span class="role-badge">Owner</span><button id="logoutBtn" class="btn-logout"><i class="fas fa-sign-out-alt"></i> Logout</button></div></div></div>
+        <div class="main-content"><div class="back-button" id="backBtn"><i class="fas fa-arrow-left"></i> Kembali</div>
+        <div class="card-modern"><div class="card-header"><h3><i class="fas fa-hand-holding-usd"></i> Total Modal (Average Cost)</h3></div><div class="table-container"><table class="stock-table"><thead><tr><th>Nama Barang</th><th>Modal Rata-rata</th><th>Stok</th><th>Total Modal</th></tr></thead><tbody id="modalBody"></tbody></table></div><div id="totalModalAll" style="padding:20px; text-align:right; font-weight:800; font-size:1.2rem;"></div></div></div>`;
+    }
+    function renderLog() {
+        return `<div class="top-navbar"><div class="navbar-container"><div class="logo-area"><div class="logo-icon"><i class="fas fa-boxes"></i></div><span class="logo-text">Stok KKP</span></div><div class="nav-right"><span class="role-badge">Owner</span><button id="logoutBtn" class="btn-logout"><i class="fas fa-sign-out-alt"></i> Logout</button></div></div></div>
+        <div class="main-content"><div class="back-button" id="backBtn"><i class="fas fa-arrow-left"></i> Kembali</div>
+        <div class="card-modern"><div class="card-header"><h3><i class="fas fa-history"></i> Log Aktivitas</h3></div><div id="logContainer" style="padding:20px; max-height:500px; overflow-y:auto;"></div></div></div>`;
+    }
+    function renderKaryawan() {
+        const active = store.users.filter(u=>u.role==="karyawan" && u.status==="approved");
+        return `<div class="top-navbar"><div class="navbar-container"><div class="logo-area"><div class="logo-icon"><i class="fas fa-boxes"></i></div><span class="logo-text">Stok KKP</span></div><div class="nav-right"><span class="role-badge">Owner</span><button id="logoutBtn" class="btn-logout"><i class="fas fa-sign-out-alt"></i> Logout</button></div></div></div>
+        <div class="main-content"><div class="back-button" id="backBtn"><i class="fas fa-arrow-left"></i> Kembali</div>
+        <div class="card-modern"><div class="card-header"><h3>Manajemen Karyawan</h3><button id="showApprovalBtn" class="btn-sm" style="background:#f59e0b; color:white;"><i class="fas fa-user-check"></i> Persetujuan (${store.pendingRegistrations.length})</button></div><div style="padding:20px;"><h4>✅ Karyawan Aktif</h4><div class="table-container"><table class="stock-table"><thead><tr><th>Username</th><th>Aksi</th></tr></thead><tbody>${active.map(k=>`<tr><td>${k.username}</td><td><button class="resignBtn" data-id="${k.id}" class="btn-sm" style="background:#dc2626; color:white; padding:6px 12px; border:none; border-radius:30px;">Resign</button></td></tr>`).join("")}</tbody></table></div></div></div><div id="pendingModal" style="display:none;"></div></div>`;
+    }
 
-    // Event handlers
+    // ========== EVENT HANDLER ==========
     function attachEvents() {
         // Auth
-        document.getElementById("btnLogin")?.addEventListener("click",()=>{ const u=document.getElementById("loginUser").value, p=document.getElementById("loginPass").value, found=store.users.find(u2=>u2.username===u && u2.password===p && u2.status==="approved"); if(found){ currentUser=found; currentView="dashboardOwner"; addActivity(found.username,"Login ke sistem"); render(); } else toast("Akun tidak ditemukan / belum disetujui"); });
+        document.getElementById("btnLogin")?.addEventListener("click",()=>{ const u=document.getElementById("loginUser").value, p=document.getElementById("loginPass").value, found=store.users.find(u2=>u2.username===u && u2.password===p && u2.status==="approved"); if(found){ currentUser=found; currentView="dashboardOwner"; addActivity(found.username,"Login ke sistem"); render(); } else toast("Akun tidak ditemukan"); });
         document.getElementById("gotoReg")?.addEventListener("click",(e)=>{e.preventDefault(); currentView="register"; render();});
         document.getElementById("gotoLogin")?.addEventListener("click",(e)=>{e.preventDefault(); currentView="login"; render();});
-        document.getElementById("btnReg")?.addEventListener("click",()=>{ const u=document.getElementById("regUser").value.trim(), p=document.getElementById("regPass").value, c=document.getElementById("regConfirm").value; if(!u||!p) return toast("Lengkapi data"); if(p!==c) return toast("Password tidak cocok"); if(store.users.find(x=>x.username===u)||store.pendingRegistrations.find(x=>x.username===u)) return toast("Username sudah ada"); store.pendingRegistrations.push({id:Date.now(), username:u, password:p}); saveStore(); addActivity("system",`Pendaftaran baru: ${u} (menunggu persetujuan)`); toast("Pendaftaran terkirim, menunggu owner"); currentView="login"; render(); });
+        document.getElementById("btnReg")?.addEventListener("click",()=>{ const u=document.getElementById("regUser").value.trim(), p=document.getElementById("regPass").value, c=document.getElementById("regConfirm").value; if(!u||!p) return toast("Lengkapi data"); if(p!==c) return toast("Password tidak cocok"); if(store.users.find(x=>x.username===u)||store.pendingRegistrations.find(x=>x.username===u)) return toast("Username sudah ada"); store.pendingRegistrations.push({id:Date.now(), username:u, password:p}); saveStore(); addActivity("system",`Pendaftaran baru: ${u}`); toast("Pendaftaran terkirim"); currentView="login"; render(); });
         document.getElementById("logoutBtn")?.addEventListener("click",()=>{ currentUser=null; currentView="login"; render(); });
         document.getElementById("backBtn")?.addEventListener("click",()=>{ if(currentUser?.role==="owner") currentView="dashboardOwner"; else currentView="dashboardKaryawan"; render(); });
-        document.querySelectorAll(".menu-card").forEach(c=>c.addEventListener("click",()=>{ const v=c.getAttribute("data-view"); if(v) currentView=v; render(); }));
+        document.querySelectorAll(".menu-item").forEach(c=>c.addEventListener("click",()=>{ const v=c.getAttribute("data-view"); if(v) currentView=v; render(); }));
         
-        // ===================== STOK =====================
+        // STOK TABLE
         if(currentView === "stokView") {
             const tbody = document.getElementById("stokTbody");
             if(tbody) {
                 tbody.innerHTML = store.inventory.map(item => `
                     <tr>
-                        <td><strong>${item.nama}</strong></td>
+                        <td class="product-name">${item.nama}</td>
                         <td>${item.stock}</td>
                         <td>Rp ${item.hargaJual.toLocaleString()}</td>
-                        <td><span class="badge-avg">Rp ${item.averageCost.toLocaleString()}</span></td>
-                        <td><button class="tambahStokBtn" data-id="${item.id}" style="background:#10b981; padding:6px 12px;"><i class="fas fa-plus-circle"></i> Tambah</button> <button class="kurangiStokBtn" data-id="${item.id}" style="background:#f59e0b; padding:6px 12px;"><i class="fas fa-minus-circle"></i> Kurang</button></td>
-                        <td><button class="updateModalBtn" data-id="${item.id}" style="background:#2563eb; padding:6px 12px;"><i class="fas fa-chart-line"></i> Update Modal</button> <button class="editHargaJualBtn" data-id="${item.id}" style="background:#64748b; padding:6px 12px;"><i class="fas fa-tag"></i> Harga Jual</button></td>
+                        <td><span class="badge-cost">Rp ${item.averageCost.toLocaleString()}</span></td>
+                        <td><div class="btn-group"><button class="tambahStokBtn btn-sm btn-success" data-id="${item.id}"><i class="fas fa-plus"></i> Tambah</button><button class="kurangiStokBtn btn-sm btn-warning" data-id="${item.id}"><i class="fas fa-minus"></i> Kurang</button></div></td>
+                        <td><div class="btn-group"><button class="updateModalBtn btn-sm btn-primary" data-id="${item.id}"><i class="fas fa-chart-line"></i> Update Modal</button><button class="editHargaJualBtn btn-sm btn-secondary" data-id="${item.id}"><i class="fas fa-tag"></i> Harga Jual</button></div></td>
                     </tr>
                 `).join("");
-                // Tambah stok biasa
-                document.querySelectorAll(".tambahStokBtn").forEach(btn => { btn.addEventListener("click", () => { const id = parseInt(btn.dataset.id); const item = store.inventory.find(i=>i.id===id); const qty = parseInt(prompt(`Tambah stok ${item.nama}:`, "1")); if(qty && qty>0) { item.stock += qty; addActivity(currentUser.username, `Tambah stok ${item.nama} +${qty}`); saveStore(); toast(`Stok ${item.nama} +${qty}`); render(); } }); });
-                // Kurangi stok
-                document.querySelectorAll(".kurangiStokBtn").forEach(btn => { btn.addEventListener("click", () => { const id = parseInt(btn.dataset.id); const item = store.inventory.find(i=>i.id===id); const qty = parseInt(prompt(`Kurangi stok (penjualan) ${item.nama}:`, "1")); if(qty && qty>0 && item.stock >= qty) { item.stock -= qty; addActivity(currentUser.username, `Kurangi stok ${item.nama} -${qty}`); saveStore(); toast(`Stok ${item.nama} -${qty}`); render(); } else toast("Stok tidak cukup"); }); });
-                // Update modal (average cost)
-                document.querySelectorAll(".updateModalBtn").forEach(btn => { btn.addEventListener("click", () => { const id = parseInt(btn.dataset.id); const item = store.inventory.find(i=>i.id===id); const qty = parseInt(prompt(`Jumlah beli ${item.nama} untuk update modal:`, "5")); if(qty && qty>0) { const newPrice = parseFloat(prompt(`Harga beli terbaru per unit (Rp):`, item.averageCost)); if(!isNaN(newPrice) && newPrice>0) { updateAverageCost(item, qty, newPrice); toast(`Modal ${item.nama} diperbarui! Stok +${qty}, rata-rata baru Rp ${item.averageCost.toLocaleString()}`); render(); } else toast("Harga tidak valid"); } }); });
-                // Edit harga jual
-                document.querySelectorAll(".editHargaJualBtn").forEach(btn => { btn.addEventListener("click", () => { const id = parseInt(btn.dataset.id); const item = store.inventory.find(i=>i.id===id); const newJual = parseFloat(prompt(`Harga jual baru ${item.nama}:`, item.hargaJual)); if(!isNaN(newJual) && newJual>0) { item.hargaJual = newJual; addActivity(currentUser.username, `Ubah harga jual ${item.nama} → Rp ${newJual.toLocaleString()}`); saveStore(); toast("Harga jual diupdate"); render(); } }); });
+                document.querySelectorAll(".tambahStokBtn").forEach(btn=>{ btn.addEventListener("click",()=>{ const id=parseInt(btn.dataset.id); const item=store.inventory.find(i=>i.id===id); const qty=parseInt(prompt(`Tambah stok ${item.nama}:`,"1")); if(qty>0){ item.stock+=qty; addActivity(currentUser.username,`Tambah stok ${item.nama} +${qty}`); saveStore(); toast(`Stok +${qty}`); render(); } }); });
+                document.querySelectorAll(".kurangiStokBtn").forEach(btn=>{ btn.addEventListener("click",()=>{ const id=parseInt(btn.dataset.id); const item=store.inventory.find(i=>i.id===id); const qty=parseInt(prompt(`Kurangi stok ${item.nama}:`,"1")); if(qty>0 && item.stock>=qty){ item.stock-=qty; addActivity(currentUser.username,`Kurangi stok ${item.nama} -${qty}`); saveStore(); toast(`Stok -${qty}`); render(); } else toast("Stok tidak cukup"); }); });
+                document.querySelectorAll(".updateModalBtn").forEach(btn=>{ btn.addEventListener("click",()=>{ const id=parseInt(btn.dataset.id); const item=store.inventory.find(i=>i.id===id); const qty=parseInt(prompt(`Jumlah beli untuk update modal ${item.nama}:`,"5")); if(qty>0){ const price=parseFloat(prompt(`Harga beli terbaru per unit (Rp):`,item.averageCost)); if(price>0){ updateAverageCost(item,qty,price); toast(`Modal update! Rata-rata baru Rp ${item.averageCost.toLocaleString()}`); render(); } } }); });
+                document.querySelectorAll(".editHargaJualBtn").forEach(btn=>{ btn.addEventListener("click",()=>{ const id=parseInt(btn.dataset.id); const item=store.inventory.find(i=>i.id===id); const newJual=parseFloat(prompt(`Harga jual baru ${item.nama}:`,item.hargaJual)); if(newJual>0){ item.hargaJual=newJual; addActivity(currentUser.username,`Ubah harga jual ${item.nama} → Rp ${newJual.toLocaleString()}`); saveStore(); toast("Harga jual diupdate"); render(); } }); });
             }
-            document.getElementById("addBarangBtn")?.addEventListener("click", () => { const nama = prompt("Nama produk:"); const hargaJual = parseFloat(prompt("Harga jual:")); const stokAwal = parseInt(prompt("Stok awal:")); const modalAwal = parseFloat(prompt("Modal awal per unit:")); if(nama && !isNaN(hargaJual) && !isNaN(stokAwal) && !isNaN(modalAwal) && stokAwal>0) { store.inventory.push({ id: Date.now(), nama, stock: stokAwal, hargaJual, averageCost: modalAwal, purchaseHistory: [] }); saveStore(); addActivity(currentUser.username, `Tambah produk baru: ${nama}`); toast("Barang ditambahkan"); render(); } else toast("Data tidak lengkap"); });
+            document.getElementById("addBarangBtn")?.addEventListener("click",()=>{ const nama=prompt("Nama produk:"); const hargaJual=parseFloat(prompt("Harga jual:")); const stok=parseInt(prompt("Stok awal:")); const modal=parseFloat(prompt("Modal awal:")); if(nama && !isNaN(hargaJual) && !isNaN(stok) && !isNaN(modal)){ store.inventory.push({id:Date.now(), nama, stock:stok, hargaJual, averageCost:modal}); saveStore(); addActivity(currentUser.username,`Tambah produk: ${nama}`); toast("Produk ditambahkan"); render(); } });
         }
         
-        // ===================== UANG MASUK + RESET =====================
+        // UANG MASUK + RESET
         if(currentView === "uangMasukView") {
-            const container = document.getElementById("daftarUangMasuk");
-            if(container) { container.innerHTML = store.uangMasukList.length ? store.uangMasukList.map(um => `<div class="uang-item"><div><i class="fas fa-money-bill-wave" style="color:#10b981;"></i> <strong>Rp ${um.jumlah.toLocaleString()}</strong></div><div><i class="far fa-calendar-alt"></i> ${um.tanggal}</div><div><span class="badge-avg">${um.keterangan}</span></div></div>`).join("") : "<div style='text-align:center; padding:20px;'>Belum ada pemasukan</div>"; }
-            document.getElementById("tambahUMBtn")?.addEventListener("click", () => { const jumlah = parseFloat(document.getElementById("jumlahUM").value); const tanggal = document.getElementById("tglUM").value || new Date().toISOString().slice(0,10); if(jumlah && jumlah>0) { store.uangMasukList.push({ id: Date.now(), jumlah, tanggal, keterangan: "Pemasukan tunai" }); saveStore(); addActivity(currentUser.username, `Menambah pemasukan Rp ${jumlah.toLocaleString()}`); toast("Pemasukan dicatat"); render(); } else toast("Nominal tidak valid"); });
-            document.getElementById("resetUangMasukBtn")?.addEventListener("click", () => resetUangMasuk());
+            const umDiv = document.getElementById("daftarUangMasuk");
+            if(umDiv) umDiv.innerHTML = store.uangMasukList.length ? store.uangMasukList.map(um=>`<div class="uang-item"><div><i class="fas fa-money-bill-wave" style="color:#10b981;"></i> <strong>Rp ${um.jumlah.toLocaleString()}</strong></div><div>${um.tanggal}</div><div><span class="badge-cost">${um.keterangan}</span></div></div>`).join("") : "<div style='text-align:center;padding:20px;'>Belum ada pemasukan</div>";
+            document.getElementById("tambahUMBtn")?.addEventListener("click",()=>{ const jumlah=parseFloat(document.getElementById("jumlahUM").value); const tanggal=document.getElementById("tglUM").value||new Date().toISOString().slice(0,10); if(jumlah>0){ store.uangMasukList.push({id:Date.now(), jumlah, tanggal, keterangan:"Pemasukan tunai"}); saveStore(); addActivity(currentUser.username,`Pemasukan Rp ${jumlah.toLocaleString()}`); toast("Pemasukan dicatat"); render(); } else toast("Nominal tidak valid"); });
+            document.getElementById("resetUangMasukBtn")?.addEventListener("click",()=>resetUangMasuk());
         }
         
-        // ===================== PROFIT (HARI KE-7) =====================
+        // PROFIT
         if(currentView === "profitView") {
-            document.getElementById("generateProfitBtn")?.addEventListener("click", () => {
-                const totalUM = store.uangMasukList.reduce((a,b)=>a+b.jumlah,0);
-                const konsumsi = store.biayaKonsumsi;
-                const operasional = store.biayaOperasional;
-                const profitKotor = totalUM - konsumsi - operasional;
-                const isSunday = (new Date().getDay() === 0);
-                const hariIni = new Date().toLocaleDateString('id-ID', { weekday: 'long' });
-                let html = `<div style="padding:8px;"><div class="flex-between"><span>💰 Total Uang Masuk</span><span class="font-bold">Rp ${totalUM.toLocaleString()}</span></div><div class="flex-between" style="margin-top:12px;"><span>🍽️ Biaya Konsumsi</span><span>Rp ${konsumsi.toLocaleString()}</span></div><div class="flex-between"><span>⚙️ Biaya Operasional</span><span>Rp ${operasional.toLocaleString()}</span></div><hr style="margin:16px 0;">`;
-                if(isSunday) html += `<div style="background:#d1fae5; border-radius:28px; padding:24px; text-align:center;"><i class="fas fa-chart-simple" style="font-size:32px; color:#059669;"></i><div style="font-size:1.7rem; font-weight:800; margin-top:8px;">Rp ${profitKotor.toLocaleString()}</div><div style="font-size:0.9rem;">✅ TOTAL PROFIT (Hari ke-7)</div><div style="font-size:0.7rem;">Rumus: Uang Masuk - Konsumsi - Operasional</div></div>`;
-                else html += `<div style="background:#fef3c7; border-radius:28px; padding:24px; text-align:center;"><i class="fas fa-lock" style="font-size:32px; color:#b45309;"></i><div style="font-weight:700;">🔒 Profit hanya bisa dilihat di hari ke-7 (Minggu)</div><div style="font-size:0.85rem;">Hari ini: ${hariIni}</div><div style="font-size:0.75rem; margin-top:12px;">Profit saat ini: Rp ${profitKotor.toLocaleString()}</div></div>`;
-                html += `</div>`; document.getElementById("profitArea").innerHTML = html;
-            });
-            document.getElementById("setBiayaBtn")?.addEventListener("click", () => { store.biayaKonsumsi = parseFloat(document.getElementById("konsumsiInput").value) || 0; store.biayaOperasional = parseFloat(document.getElementById("operasionalInput").value) || 0; saveStore(); addActivity(currentUser.username, `Update biaya: Konsumsi ${store.biayaKonsumsi.toLocaleString()}, Operasional ${store.biayaOperasional.toLocaleString()}`); toast("Biaya disimpan"); render(); });
+            document.getElementById("generateProfitBtn")?.addEventListener("click",()=>{ const total=store.uangMasukList.reduce((a,b)=>a+b.jumlah,0); const profitKotor=total-store.biayaKonsumsi-store.biayaOperasional; const isSunday=(new Date().getDay()===0); let html=`<div class="flex-between"><span>💰 Total Uang Masuk</span><strong>Rp ${total.toLocaleString()}</strong></div><div class="flex-between" style="margin-top:12px;"><span>🍽️ Konsumsi</span><span>Rp ${store.biayaKonsumsi.toLocaleString()}</span></div><div class="flex-between"><span>⚙️ Operasional</span><span>Rp ${store.biayaOperasional.toLocaleString()}</span></div><hr style="margin:16px 0;">`; if(isSunday) html+=`<div style="background:#d1fae5; border-radius:20px; padding:20px; text-align:center;"><i class="fas fa-chart-simple" style="font-size:28px; color:#059669;"></i><div style="font-size:1.6rem; font-weight:800;">Rp ${profitKotor.toLocaleString()}</div><div>✅ TOTAL PROFIT (Hari ke-7)</div></div>`; else html+=`<div style="background:#fef3c7; border-radius:20px; padding:20px; text-align:center;"><i class="fas fa-lock" style="font-size:28px;"></i><div style="font-weight:600;">Profit hanya di hari ke-7 (Minggu)</div><div>Hari ini: ${new Date().toLocaleDateString('id-ID',{weekday:'long'})}</div><div style="font-size:0.8rem;">Profit sementara: Rp ${profitKotor.toLocaleString()}</div></div>`; document.getElementById("profitArea").innerHTML=html; });
+            document.getElementById("setBiayaBtn")?.addEventListener("click",()=>{ store.biayaKonsumsi=parseFloat(document.getElementById("konsumsiInput").value)||0; store.biayaOperasional=parseFloat(document.getElementById("operasionalInput").value)||0; saveStore(); addActivity(currentUser.username,`Update biaya`); toast("Biaya disimpan"); render(); });
         }
         
-        // ===================== MODAL =====================
+        // MODAL
         if(currentView === "modalView") {
-            const modalBody = document.getElementById("modalBody"); let grand = 0;
-            if(modalBody) { modalBody.innerHTML = store.inventory.map(item => { const total = item.stock * item.averageCost; grand += total; return `<tr><td><strong>${item.nama}</strong></td><td>Rp ${item.averageCost.toLocaleString()}</td><td>${item.stock}</td><td>Rp ${total.toLocaleString()}</td></tr>`; }).join(""); document.getElementById("totalModalAll").innerHTML = `🏦 Total Keseluruhan Modal (Average Cost): Rp ${grand.toLocaleString()}`; }
+            const mBody=document.getElementById("modalBody"); let grand=0;
+            if(mBody){ mBody.innerHTML=store.inventory.map(item=>{ const tot=item.stock*item.averageCost; grand+=tot; return `<tr><td class="product-name">${item.nama}</td><td>Rp ${item.averageCost.toLocaleString()}</td><td>${item.stock}</td><td>Rp ${tot.toLocaleString()}</td></tr>`; }).join(""); document.getElementById("totalModalAll").innerHTML=`🏦 Total Modal Keseluruhan: Rp ${grand.toLocaleString()}`; }
         }
         
-        // ===================== LOG AKTIVITAS (tanpa login/logout) =====================
-        if(currentView === "logActivityView") {
-            const logDiv = document.getElementById("logContainer");
-            if(logDiv) logDiv.innerHTML = store.activityLogs.slice().reverse().map(l=>`<div style="padding:14px 0; border-bottom:1px solid #eef2ff;"><i class="fas fa-user-circle"></i> <strong>${l.username}</strong> <span style="font-size:0.7rem; color:#64748b;">${l.timestamp}</span><br>${l.action}</div>`).join("");
-        }
+        // LOG
+        if(currentView === "logActivityView") { const logDiv=document.getElementById("logContainer"); if(logDiv) logDiv.innerHTML=store.activityLogs.slice().reverse().map(l=>`<div style="padding:12px 0; border-bottom:1px solid #eef2ff;"><i class="fas fa-user-circle"></i> <strong>${l.username}</strong> <span style="font-size:0.7rem; color:#64748b;">${l.timestamp}</span><br>${l.action}</div>`).join(""); }
         
-        // ===================== KARYAWAN APPROVAL =====================
+        // KARYAWAN
         if(currentView === "listKaryawanView") {
-            document.getElementById("showApprovalBtn")?.addEventListener("click", ()=>{ const modalDiv = document.getElementById("pendingModal"); if(modalDiv) { if(store.pendingRegistrations.length===0) modalDiv.innerHTML = `<div class="modal-backdrop"><div class="modal-card"><p>Tidak ada pendaftaran</p><button id="closeModal" class="outline">Tutup</button></div></div>`; else modalDiv.innerHTML = `<div class="modal-backdrop"><div class="modal-card"><h3>Persetujuan Karyawan</h3><div class="table-wrapper"><table><thead><tr><th>Username</th><th>Aksi</th></tr></thead><tbody>${store.pendingRegistrations.map(p=>`<tr><td>${p.username}</td><td><button class="approveBtn" data-id="${p.id}" style="background:#10b981;">Setujui</button> <button class="rejectBtn" data-id="${p.id}" style="background:#dc2626;">Tolak</button></td></tr>`).join("")}</tbody></tr></div><button id="closeModal" class="outline" style="margin-top:16px;">Tutup</button></div></div>`; modalDiv.style.display = "block"; document.querySelectorAll(".approveBtn").forEach(btn=>{ btn.addEventListener("click",()=>{ const id=parseInt(btn.dataset.id); const p=store.pendingRegistrations.find(pp=>pp.id===id); if(p){ store.users.push({id:p.id, username:p.username, password:p.password, role:"karyawan", status:"approved"}); store.pendingRegistrations=store.pendingRegistrations.filter(pp=>pp.id!==id); saveStore(); addActivity(currentUser.username,`Menyetujui karyawan: ${p.username}`); toast("Akun disetujui"); render(); } }); }); document.querySelectorAll(".rejectBtn").forEach(btn=>{ btn.addEventListener("click",()=>{ const id=parseInt(btn.dataset.id); store.pendingRegistrations=store.pendingRegistrations.filter(pp=>pp.id!==id); saveStore(); toast("Pendaftaran ditolak"); render(); }); }); document.getElementById("closeModal")?.addEventListener("click",()=>{ modalDiv.style.display="none"; }); } });
-            document.querySelectorAll(".resignBtn").forEach(btn=>{ btn.addEventListener("click",()=>{ const id=parseInt(btn.dataset.id); const user=store.users.find(u=>u.id===id); if(user && confirm(`Resign ${user.username}?`)){ store.users=store.users.filter(u=>u.id!==id); saveStore(); addActivity(currentUser.username,`Menghapus karyawan ${user.username} (resign)`); toast("Karyawan dihapus"); render(); } }); });
+            document.getElementById("showApprovalBtn")?.addEventListener("click",()=>{ const modalDiv=document.getElementById("pendingModal"); if(modalDiv){ if(store.pendingRegistrations.length===0) modalDiv.innerHTML=`<div class="modal-backdrop"><div class="modal-card"><p>Tidak ada pendaftaran</p><button id="closeModal" class="btn-sm btn-outline">Tutup</button></div></div>`; else modalDiv.innerHTML=`<div class="modal-backdrop"><div class="modal-card"><h3>Persetujuan Karyawan</h3><div class="table-container"><table class="stock-table"><thead><tr><th>Username</th><th>Aksi</th></tr></thead><tbody>${store.pendingRegistrations.map(p=>`<tr><td>${p.username}</td><td><button class="approveBtn" data-id="${p.id}" class="btn-sm btn-success">Setujui</button> <button class="rejectBtn" data-id="${p.id}" class="btn-sm" style="background:#dc2626;">Tolak</button></td></tr>`).join("")}</tbody></table></div><button id="closeModal" class="btn-sm btn-outline" style="margin-top:16px;">Tutup</button></div></div>`; modalDiv.style.display="block"; document.querySelectorAll(".approveBtn").forEach(btn=>{ btn.addEventListener("click",()=>{ const id=parseInt(btn.dataset.id); const p=store.pendingRegistrations.find(pp=>pp.id===id); if(p){ store.users.push({id:p.id, username:p.username, password:p.password, role:"karyawan", status:"approved"}); store.pendingRegistrations=store.pendingRegistrations.filter(pp=>pp.id!==id); saveStore(); addActivity(currentUser.username,`Menyetujui karyawan: ${p.username}`); toast("Akun disetujui"); render(); } }); }); document.querySelectorAll(".rejectBtn").forEach(btn=>{ btn.addEventListener("click",()=>{ const id=parseInt(btn.dataset.id); store.pendingRegistrations=store.pendingRegistrations.filter(pp=>pp.id!==id); saveStore(); toast("Ditolak"); render(); }); }); document.getElementById("closeModal")?.addEventListener("click",()=>{ modalDiv.style.display="none"; }); } });
+            document.querySelectorAll(".resignBtn").forEach(btn=>{ btn.addEventListener("click",()=>{ const id=parseInt(btn.dataset.id); const user=store.users.find(u=>u.id===id); if(user && confirm(`Resign ${user.username}?`)){ store.users=store.users.filter(u=>u.id!==id); saveStore(); addActivity(currentUser.username,`Resign karyawan ${user.username}`); toast("Karyawan dihapus"); render(); } }); });
         }
     }
     render();
