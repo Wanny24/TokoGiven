@@ -1,0 +1,456 @@
+Berikut adalah kode HTML yang telah diperbaiki untuk tampilan Profit dan Uang Masuk, dengan perhitungan yang akurat serta indikator hari ke-7.
+```html
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <title>Smart Sembako POS | Profit & Uang Masuk Fix</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background: linear-gradient(135deg, #f0f4fa 0%, #e2e8f0 100%); min-height: 100vh; padding: 16px; }
+        .app-container { max-width: 1400px; margin: 0 auto; width: 100%; }
+        .card { background: rgba(255, 255, 255, 0.96); border-radius: 28px; box-shadow: 0 10px 25px -8px rgba(0,0,0,0.1); padding: 1.5rem; border: 1px solid rgba(255,255,255,0.6); }
+        button, .btn { background: linear-gradient(105deg, #1e293b 0%, #0f172a 100%); border: none; color: white; padding: 12px 20px; border-radius: 40px; font-weight: 600; cursor: pointer; font-size: 0.85rem; display: inline-flex; align-items: center; gap: 8px; justify-content: center; }
+        button:active { transform: scale(0.97); }
+        input, select { background: #f8fafc; border: 1px solid #cbd5e1; padding: 12px 16px; border-radius: 28px; font-size: 0.9rem; width: 100%; }
+        .table-responsive { overflow-x: auto; border-radius: 24px; }
+        table { width: 100%; border-collapse: collapse; min-width: 500px; }
+        th, td { text-align: left; padding: 12px 10px; border-bottom: 1px solid #e2e8f0; font-size: 0.85rem; }
+        th { background: #f1f5f9; }
+        .grid-menu { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 16px; margin-top: 20px; }
+        .menu-card { background: white; border-radius: 24px; padding: 1.2rem 0.8rem; cursor: pointer; border-left: 4px solid #3b82f6; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 10px; box-shadow: 0 6px 14px rgba(0,0,0,0.05); }
+        .menu-card i { font-size: 2rem; color: #3b82f6; }
+        .navbar { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; background: white; padding: 12px 20px; border-radius: 60px; margin-bottom: 20px; }
+        .role-badge { background: #d9f99d; color: #365314; padding: 4px 14px; border-radius: 40px; font-weight: bold; font-size: 0.8rem; }
+        .profit-card { background: linear-gradient(145deg, #fef9e3, #fff5db); border-radius: 28px; }
+        .toast-msg { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #1e293b; color: white; padding: 10px 20px; border-radius: 50px; z-index: 1000; font-size: 0.8rem; text-align: center; animation: fadeInUp 0.3s ease; }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateX(-50%) translateY(20px);} to { opacity: 1; transform: translateX(-50%) translateY(0);} }
+        .flex-between { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
+        .uang-masuk-list { max-height: 350px; overflow-y: auto; margin-top: 16px; }
+        .uang-item { background: #f8fafc; border-radius: 20px; padding: 12px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
+        .profit-stats { background: white; border-radius: 24px; padding: 20px; margin-bottom: 20px; }
+        .profit-row { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #e2e8f0; font-size: 1rem; }
+        .profit-total { font-size: 1.4rem; font-weight: 800; color: #059669; margin-top: 16px; text-align: right; }
+        .warning-badge { background: #fef3c7; color: #b45309; padding: 8px 16px; border-radius: 30px; font-size: 0.75rem; display: inline-flex; align-items: center; gap: 6px; }
+        @media (max-width: 640px) { body { padding: 12px; } .card { padding: 1.2rem; } .profit-row { font-size: 0.85rem; } }
+    </style>
+</head>
+<body>
+<div class="app-container" id="app"></div>
+
+<script>
+    // ======================== DATA STORE ========================
+    let store = {
+        users: [ { id: 1, username: "owner", password: "owner", role: "owner", status: "approved" } ],
+        pendingRegistrations: [],
+        inventory: [
+            { id: 101, nama: "Beras Premium 5kg", modal: 55000, hargaJual: 75000, stok: 25 },
+            { id: 102, nama: "Minyak Goreng 1L", modal: 14000, hargaJual: 20000, stok: 40 },
+            { id: 103, nama: "Gula Pasir 1kg", modal: 13000, hargaJual: 18000, stok: 30 },
+            { id: 104, nama: "Telur Ayam (1 papan)", modal: 45000, hargaJual: 55000, stok: 15 },
+            { id: 105, nama: "Tepung Terigu 1kg", modal: 10000, hargaJual: 15000, stok: 22 }
+        ],
+        uangMasukList: [
+            { id: 1, jumlah: 8750000, tanggal: "2026-04-01", keterangan: "Penjualan sembako" },
+            { id: 2, jumlah: 4200000, tanggal: "2026-04-03", keterangan: "Order grosir" }
+        ],
+        biayaKonsumsi: 1250000,   // contoh biaya konsumsi minggu ini
+        biayaOperasional: 800000,  // contoh biaya operasional
+        activityLogs: [
+            { id: 1, timestamp: new Date().toLocaleString(), username: "system", action: "Sistem siap - profit & uang masuk fix" }
+        ]
+    };
+
+    // Load/save localStorage
+    function loadStore() {
+        const saved = localStorage.getItem("sembako_profit_fix");
+        if(saved) {
+            try {
+                const data = JSON.parse(saved);
+                store.users = data.users || store.users;
+                store.pendingRegistrations = data.pendingRegistrations || [];
+                store.inventory = data.inventory || store.inventory;
+                store.uangMasukList = data.uangMasukList || store.uangMasukList;
+                store.biayaKonsumsi = data.biayaKonsumsi ?? 1250000;
+                store.biayaOperasional = data.biayaOperasional ?? 800000;
+                store.activityLogs = data.activityLogs || store.activityLogs;
+            } catch(e) {}
+        }
+    }
+    function saveStore() { localStorage.setItem("sembako_profit_fix", JSON.stringify(store)); }
+    loadStore();
+
+    function addActivity(username, action) {
+        const newId = store.activityLogs.length ? Math.max(...store.activityLogs.map(l=>l.id)) + 1 : 1;
+        const now = new Date();
+        const timestamp = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')} ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}:${String(now.getSeconds()).padStart(2,'0')}`;
+        store.activityLogs.push({ id: newId, timestamp, username, action });
+        if(store.activityLogs.length > 200) store.activityLogs.shift();
+        saveStore();
+    }
+
+    function showToast(msg) {
+        const toast = document.createElement('div');
+        toast.className = 'toast-msg';
+        toast.innerHTML = `<i class="fas fa-info-circle"></i> ${msg}`;
+        document.body.appendChild(toast);
+        setTimeout(() => toast.remove(), 2500);
+    }
+
+    let currentUser = null;
+    let currentView = "login";
+
+    function render() {
+        const app = document.getElementById("app");
+        if(!currentUser) {
+            if(currentView === "register") app.innerHTML = renderRegister();
+            else app.innerHTML = renderLogin();
+        } else {
+            if(currentUser.role === "owner") {
+                if(currentView === "stokView") app.innerHTML = renderStok(true);
+                else if(currentView === "uangMasukView") app.innerHTML = renderUangMasuk();
+                else if(currentView === "profitView") app.innerHTML = renderProfit();
+                else if(currentView === "modalView") app.innerHTML = renderModal();
+                else if(currentView === "logActivityView") app.innerHTML = renderLogActivity();
+                else if(currentView === "listKaryawanView") app.innerHTML = renderKaryawanList();
+                else app.innerHTML = renderOwnerDashboard();
+            } else {
+                if(currentView === "stokView") app.innerHTML = renderStok(false);
+                else if(currentView === "uangMasukView") app.innerHTML = renderUangMasuk();
+                else if(currentView === "profitView") app.innerHTML = renderProfit();
+                else app.innerHTML = renderKaryawanDashboard();
+            }
+        }
+        attachEvents();
+    }
+
+    function renderLogin() {
+        return `<div class="card" style="max-width: 450px; margin: 60px auto; text-align: center;">
+            <i class="fas fa-store" style="font-size: 48px; color:#1e293b;"></i>
+            <h2 style="margin: 20px 0;">Login Sembako POS</h2>
+            <input type="text" id="loginUser" placeholder="Username" style="margin-bottom: 16px;">
+            <input type="password" id="loginPass" placeholder="Password" style="margin-bottom: 24px;">
+            <button id="btnLogin" style="width:100%">Masuk <i class="fas fa-arrow-right"></i></button>
+            <p style="margin-top: 20px;">Belum punya akun? <a href="#" id="gotoReg" style="color:#3b82f6;">Daftar (butuh persetujuan owner)</a></p>
+            <div style="font-size:12px; margin-top:20px;">Demo owner: owner/owner</div>
+        </div>`;
+    }
+    function renderRegister() {
+        return `<div class="card" style="max-width: 450px; margin: 40px auto;">
+            <h2>Daftar Karyawan</h2>
+            <p style="color:#f59e0b; margin:12px 0;"><i class="fas fa-clock"></i> Pendaftaran menunggu persetujuan Owner</p>
+            <input type="text" id="regUser" placeholder="Username" style="margin-bottom: 16px;">
+            <input type="password" id="regPass" placeholder="Password" style="margin-bottom: 16px;">
+            <input type="password" id="regConfirm" placeholder="Konfirmasi" style="margin-bottom: 24px;">
+            <button id="btnReg" style="width:100%">Daftar & Kirim Approval</button>
+            <p style="margin-top: 20px; text-align:center;"><a href="#" id="gotoLogin">Sudah punya akun? Login</a></p>
+        </div>`;
+    }
+    function renderOwnerDashboard() {
+        const pending = store.pendingRegistrations.length;
+        return `<div class="navbar"><h2><i class="fas fa-chalkboard-user"></i> Owner Dashboard</h2><div><span class="role-badge">Owner</span> <button id="logoutBtn" style="background:#ef4444;">Logout</button></div></div>
+        <div class="grid-menu">
+            <div class="menu-card" data-view="stokView"><i class="fas fa-boxes"></i><span>Stok Sembako</span></div>
+            <div class="menu-card" data-view="uangMasukView"><i class="fas fa-coins"></i><span>Uang Masuk</span></div>
+            <div class="menu-card" data-view="profitView"><i class="fas fa-chart-line"></i><span>Profit</span></div>
+            <div class="menu-card" data-view="modalView"><i class="fas fa-hand-holding-usd"></i><span>Modal</span></div>
+            <div class="menu-card" data-view="logActivityView"><i class="fas fa-history"></i><span>Log Activity</span></div>
+            <div class="menu-card" data-view="listKaryawanView"><i class="fas fa-users"></i><span>Karyawan ${pending>0 ? `(${pending})` : ''}</span></div>
+        </div>`;
+    }
+    function renderKaryawanDashboard() {
+        return `<div class="navbar"><h2><i class="fas fa-user-check"></i> Karyawan Panel</h2><div><span class="role-badge">Karyawan</span> <button id="logoutBtn" style="background:#ef4444;">Logout</button></div></div>
+        <div class="grid-menu"><div class="menu-card" data-view="stokView"><i class="fas fa-boxes"></i><span>Stok Sembako</span></div></div>
+        <div style="margin-top:20px; padding:16px; background:#f1f5f9; border-radius:28px; text-align:center;">🔒 Menu lain hanya untuk owner</div>`;
+    }
+    
+    // ===================== STOK =====================
+    function renderStok(isOwner) {
+        return `<div class="navbar"><button id="backBtn" class="btn"><i class="fas fa-arrow-left"></i> Kembali</button><h3>Stok Sembako</h3><button id="addBarangBtn" style="background:#10b981;">+ Tambah</button></div>
+        <div class="card"><div class="table-responsive"><table><thead><tr><th>Nama</th><th>Modal</th><th>Harga Jual</th><th>Stok</th><th>Aksi</th></tr></thead><tbody id="stokBody"></tbody></table></div></div>`;
+    }
+    function renderUangMasuk() {
+        return `<div class="navbar"><button id="backBtn" class="btn"><i class="fas fa-arrow-left"></i> Kembali</button><h3><i class="fas fa-coins"></i> Uang Masuk</h3></div>
+        <div class="card">
+            <div class="flex-between" style="gap:12px;">
+                <input type="number" id="jumlahUM" placeholder="Nominal (Rp)" style="flex:2">
+                <input type="date" id="tglUM" style="flex:1">
+                <button id="tambahUMBtn" style="white-space:nowrap;">Input</button>
+            </div>
+            <div style="margin-top:24px;">
+                <h4>📋 Riwayat Pemasukan</h4>
+                <div id="daftarUangMasuk" class="uang-masuk-list"></div>
+            </div>
+        </div>`;
+    }
+    function renderProfit() {
+        return `<div class="navbar"><button id="backBtn" class="btn"><i class="fas fa-arrow-left"></i> Kembali</button><h3><i class="fas fa-chart-line"></i> Profit Perminggu</h3><button id="generateProfitBtn" style="background:#0f172a;">Generate Laporan</button></div>
+        <div id="profitResultArea" class="card profit-card"></div>
+        <div class="card" style="margin-top:16px;">
+            <h4>⚙️ Setting Biaya Mingguan</h4>
+            <div class="flex-between">
+                <div style="flex:1"><label>Konsumsi (Rp)</label><input type="number" id="konsumsiInput" value="${store.biayaKonsumsi}"></div>
+                <div style="flex:1"><label>Operasional (Rp)</label><input type="number" id="operasionalInput" value="${store.biayaOperasional}"></div>
+                <button id="setBiayaBtn" style="align-self:flex-end;">Simpan Biaya</button>
+            </div>
+        </div>`;
+    }
+    function renderModal() {
+        return `<div class="navbar"><button id="backBtn" class="btn"><i class="fas fa-arrow-left"></i> Kembali</button><h3>Total Modal Sembako</h3></div>
+        <div class="card"><div class="table-responsive"><table><thead><tr><th>Barang</th><th>Modal/unit</th><th>Stok</th><th>Total Modal</th></tr></thead><tbody id="modalBody"></tbody></table></div><div id="totalModalAll" style="margin-top:20px; font-weight:bold; text-align:right; font-size:1.2rem;"></div></div>`;
+    }
+    function renderLogActivity() {
+        return `<div class="navbar"><button id="backBtn" class="btn"><i class="fas fa-arrow-left"></i> Kembali</button><h3>Log Aktivitas</h3></div>
+        <div class="card"><div id="logContainer" style="max-height:500px; overflow-y:auto;"></div></div>`;
+    }
+    function renderKaryawanList() {
+        const karyawanActive = store.users.filter(u=> u.role === "karyawan" && u.status === "approved");
+        const pendingCount = store.pendingRegistrations.length;
+        return `<div class="navbar"><button id="backBtn" class="btn"><i class="fas fa-arrow-left"></i> Kembali</button><h3>Manajemen Karyawan</h3><button id="showApprovalBtn" style="background:#f59e0b;">Persetujuan (${pendingCount})</button></div>
+        <div class="card"><h4>✅ Karyawan Aktif</h4><div class="table-responsive"><table><thead><tr><th>Username</th><th>Aksi</th></tr></thead><tbody>${karyawanActive.map(k=>`<tr><td>${k.username}</td><td><button class="resignBtn" data-id="${k.id}" style="background:#ef4444;">Resign</button></td></tr>`).join("")}</tbody></table></div></div>
+        <div id="pendingModal" style="display:none;"></div>`;
+    }
+
+    // ===================== EVENT HANDLER =====================
+    function attachEvents() {
+        // Login & register
+        document.getElementById("btnLogin")?.addEventListener("click", () => {
+            const user = document.getElementById("loginUser").value;
+            const pass = document.getElementById("loginPass").value;
+            const found = store.users.find(u => u.username === user && u.password === pass && u.status === "approved");
+            if(found) { currentUser = found; currentView = "dashboardOwner"; addActivity(found.username, "Login berhasil"); render(); }
+            else showToast("Username/password salah atau akun belum disetujui owner");
+        });
+        document.getElementById("gotoReg")?.addEventListener("click", (e) => { e.preventDefault(); currentView="register"; render(); });
+        document.getElementById("gotoLogin")?.addEventListener("click", (e) => { e.preventDefault(); currentView="login"; render(); });
+        document.getElementById("btnReg")?.addEventListener("click", () => {
+            const user = document.getElementById("regUser").value.trim();
+            const pass = document.getElementById("regPass").value;
+            const conf = document.getElementById("regConfirm").value;
+            if(!user || !pass) return showToast("Isi semua field");
+            if(pass !== conf) return showToast("Password tidak cocok");
+            if(store.users.find(u=>u.username===user) || store.pendingRegistrations.find(p=>p.username===user)) return showToast("Username sudah ada");
+            store.pendingRegistrations.push({ id: Date.now(), username: user, password: pass });
+            saveStore();
+            addActivity("system", `Pendaftaran baru: ${user} (menunggu persetujuan owner)`);
+            showToast("Pendaftaran terkirim! Tunggu persetujuan owner.");
+            currentView="login"; render();
+        });
+        document.getElementById("logoutBtn")?.addEventListener("click", () => { addActivity(currentUser.username, "Logout"); currentUser=null; currentView="login"; render(); });
+        document.getElementById("backBtn")?.addEventListener("click", () => { if(currentUser.role === "owner") currentView="dashboardOwner"; else currentView="dashboardKaryawan"; render(); });
+        
+        document.querySelectorAll(".menu-card").forEach(card => {
+            card.addEventListener("click", (e) => { const v = card.getAttribute("data-view"); if(v) currentView = v; render(); });
+        });
+        
+        // Stok logic
+        if(currentView === "stokView") {
+            const tbody = document.getElementById("stokBody");
+            if(tbody) {
+                tbody.innerHTML = store.inventory.map(item => `
+                    <tr><td>${item.nama}</td><td>Rp ${item.modal.toLocaleString()}</td><td>Rp ${item.hargaJual.toLocaleString()}</td><td>${item.stok}</td>
+                    <td><button class="stokTambah" data-id="${item.id}">+ Stok</button> <button class="stokKurang" data-id="${item.id}">- Stok</button> <button class="hapusBarang" data-id="${item.id}">Hapus</button></td></tr>
+                `).join("");
+                document.querySelectorAll(".stokTambah").forEach(btn => {
+                    btn.addEventListener("click", () => {
+                        const id = parseInt(btn.dataset.id);
+                        const item = store.inventory.find(i=>i.id===id);
+                        let add = parseInt(prompt("Tambah stok:", "1"));
+                        if(add>0) { item.stok += add; addActivity(currentUser.username, `Tambah stok ${item.nama} +${add}`); saveStore(); render(); }
+                    });
+                });
+                document.querySelectorAll(".stokKurang").forEach(btn => {
+                    btn.addEventListener("click", () => {
+                        const id = parseInt(btn.dataset.id);
+                        const item = store.inventory.find(i=>i.id===id);
+                        let kur = parseInt(prompt("Kurangi stok:", "1"));
+                        if(kur>0 && item.stok >= kur) { item.stok -= kur; addActivity(currentUser.username, `Kurangi stok ${item.nama} -${kur}`); saveStore(); render(); }
+                        else showToast("Stok tidak cukup");
+                    });
+                });
+                document.querySelectorAll(".hapusBarang").forEach(btn => {
+                    btn.addEventListener("click", () => {
+                        const id = parseInt(btn.dataset.id);
+                        const item = store.inventory.find(i=>i.id===id);
+                        if(confirm(`Hapus ${item.nama}?`)) { store.inventory = store.inventory.filter(i=>i.id!==id); addActivity(currentUser.username, `Hapus barang ${item.nama}`); saveStore(); render(); }
+                    });
+                });
+            }
+            document.getElementById("addBarangBtn")?.addEventListener("click", () => {
+                const nama = prompt("Nama sembako:");
+                const modal = parseFloat(prompt("Modal per unit:"));
+                const hargaJual = parseFloat(prompt("Harga jual:"));
+                const stok = parseInt(prompt("Stok awal:"));
+                if(nama && !isNaN(modal) && !isNaN(hargaJual) && !isNaN(stok)) {
+                    store.inventory.push({ id: Date.now(), nama, modal, hargaJual, stok });
+                    saveStore(); addActivity(currentUser.username, `Tambah barang baru: ${nama}`); render();
+                } else showToast("Data tidak valid");
+            });
+        }
+        
+        // ========== UANG MASUK FIX (tampilan rapi) ==========
+        if(currentView === "uangMasukView") {
+            renderUangMasukList();
+            document.getElementById("tambahUMBtn")?.addEventListener("click", () => {
+                const jumlah = parseFloat(document.getElementById("jumlahUM").value);
+                const tanggal = document.getElementById("tglUM").value || new Date().toISOString().slice(0,10);
+                if(!isNaN(jumlah) && jumlah > 0) {
+                    store.uangMasukList.push({ id: Date.now(), jumlah, tanggal, keterangan: "Pemasukan tunai" });
+                    saveStore();
+                    addActivity(currentUser.username, `Menambah pemasukan Rp ${jumlah.toLocaleString()}`);
+                    renderUangMasukList();
+                    document.getElementById("jumlahUM").value = "";
+                    showToast("Pemasukan berhasil dicatat");
+                } else showToast("Nominal harus lebih dari 0");
+            });
+        }
+        
+        // ========== PROFIT FIX dengan perhitungan & indikator hari ke-7 ==========
+        if(currentView === "profitView") {
+            document.getElementById("generateProfitBtn")?.addEventListener("click", () => {
+                const totalUangMasuk = store.uangMasukList.reduce((sum, item) => sum + item.jumlah, 0);
+                const konsumsi = store.biayaKonsumsi;
+                const operasional = store.biayaOperasional;
+                const profitKotor = totalUangMasuk - konsumsi - operasional;
+                const profit = profitKotor > 0 ? profitKotor : 0;
+                
+                // Cek apakah hari ke-7 (Minggu) - dalam simulasi kita gunakan getDay() === 0
+                const today = new Date();
+                const isSunday = (today.getDay() === 0);
+                const dayName = today.toLocaleDateString('id-ID', { weekday: 'long' });
+                
+                let profitHtml = `<div class="profit-stats">
+                    <div class="profit-row"><span>💰 Total Uang Masuk</span><span style="font-weight:700;">Rp ${totalUangMasuk.toLocaleString()}</span></div>
+                    <div class="profit-row"><span>🍽️ Biaya Konsumsi</span><span>Rp ${konsumsi.toLocaleString()}</span></div>
+                    <div class="profit-row"><span>⚙️ Biaya Operasional</span><span>Rp ${operasional.toLocaleString()}</span></div>
+                    <div style="border-top:2px dashed #cbd5e1; margin:12px 0;"></div>`;
+                
+                if(isSunday) {
+                    profitHtml += `<div class="profit-row" style="background:#ecfdf5; border-radius:20px; padding:12px;"><span style="font-weight:800;">✅ TOTAL PROFIT (Hari ke-7)</span><span style="font-size:1.3rem; font-weight:800; color:#059669;">Rp ${profit.toLocaleString()}</span></div>
+                    <div style="margin-top:12px; font-size:0.8rem; color:#047857;"><i class="fas fa-check-circle"></i> Profit dihitung dari: Uang Masuk - Konsumsi - Operasional</div>`;
+                } else {
+                    profitHtml += `<div class="warning-badge" style="margin:12px 0;"><i class="fas fa-calendar-week"></i> Hari ini: ${dayName} (bukan hari ke-7)</div>
+                    <div style="background:#fef9c3; border-radius:20px; padding:16px; text-align:center; margin-top:8px;">
+                        <i class="fas fa-lock" style="color:#b45309;"></i> <strong>Total Profit hanya bisa dilihat di hari ke-7 (Minggu)</strong><br>
+                        <span style="font-size:0.8rem;">Profit = Uang Masuk - Konsumsi - Operasional = Rp ${profit.toLocaleString()}</span>
+                        <div style="font-size:0.7rem; margin-top:6px;">🔒 Saat ini belum hari ke-7, profit disembunyikan.</div>
+                    </div>`;
+                }
+                profitHtml += `</div><div style="font-size:0.7rem; color:#64748b; margin-top:8px;">📊 Data terupdate: ${new Date().toLocaleString()}</div>`;
+                document.getElementById("profitResultArea").innerHTML = profitHtml;
+            });
+            
+            document.getElementById("setBiayaBtn")?.addEventListener("click", () => {
+                const newKonsumsi = parseFloat(document.getElementById("konsumsiInput").value);
+                const newOperasional = parseFloat(document.getElementById("operasionalInput").value);
+                if(!isNaN(newKonsumsi)) store.biayaKonsumsi = newKonsumsi;
+                if(!isNaN(newOperasional)) store.biayaOperasional = newOperasional;
+                saveStore();
+                addActivity(currentUser.username, `Update biaya: Konsumsi ${store.biayaKonsumsi.toLocaleString()}, Operasional ${store.biayaOperasional.toLocaleString()}`);
+                showToast("Biaya disimpan");
+                render(); // refresh tampilan profit
+            });
+        }
+        
+        // Modal
+        if(currentView === "modalView") {
+            const tbody = document.getElementById("modalBody");
+            let total = 0;
+            if(tbody) {
+                tbody.innerHTML = store.inventory.map(item => {
+                    const totalModalItem = item.modal * item.stok;
+                    total += totalModalItem;
+                    return `<tr><td>${item.nama}</td><td>Rp ${item.modal.toLocaleString()}</td><td>${item.stok}</td><td>Rp ${totalModalItem.toLocaleString()}</td></tr>`;
+                }).join("");
+                document.getElementById("totalModalAll").innerHTML = `🏦 Total Keseluruhan Modal: Rp ${total.toLocaleString()}`;
+            }
+        }
+        
+        // Log activity
+        if(currentView === "logActivityView") {
+            const container = document.getElementById("logContainer");
+            if(container) {
+                container.innerHTML = store.activityLogs.slice().reverse().map(log => `<div style="padding:10px 0; border-bottom:1px solid #e2e8f0;"><i class="fas fa-user-clock"></i> <strong>${log.username}</strong> <span style="font-size:0.7rem; color:#64748b;">${log.timestamp}</span><br>${log.action}</div>`).join("");
+            }
+        }
+        
+        // Karyawan approval & resign
+        if(currentView === "listKaryawanView") {
+            document.getElementById("showApprovalBtn")?.addEventListener("click", () => {
+                const modalDiv = document.getElementById("pendingModal");
+                if(modalDiv) {
+                    if(store.pendingRegistrations.length === 0) {
+                        modalDiv.innerHTML = `<div class="card"><p>Tidak ada pending approval</p><button id="closeModalBtn">Tutup</button></div>`;
+                    } else {
+                        modalDiv.innerHTML = `<div class="card"><h4>📋 Daftar Menunggu Persetujuan</h4><div class="table-responsive"><table><thead><tr><th>Username</th><th>Aksi</th></tr></thead><tbody>${store.pendingRegistrations.map(p => `
+                            <tr><td>${p.username}</td><td><button class="approveKaryawan" data-id="${p.id}" style="background:#10b981;">Setujui</button> <button class="rejectKaryawan" data-id="${p.id}" style="background:#ef4444;">Tolak</button></td></tr>
+                        `).join("")}</tbody></table></div><button id="closeModalBtn" style="margin-top:12px;">Tutup</button></div>`;
+                    }
+                    modalDiv.style.display = "block";
+                    document.querySelectorAll(".approveKaryawan").forEach(btn => {
+                        btn.addEventListener("click", (e) => {
+                            const id = parseInt(btn.dataset.id);
+                            const pending = store.pendingRegistrations.find(p => p.id === id);
+                            if(pending) {
+                                store.users.push({ id: pending.id, username: pending.username, password: pending.password, role: "karyawan", status: "approved" });
+                                store.pendingRegistrations = store.pendingRegistrations.filter(p => p.id !== id);
+                                saveStore();
+                                addActivity(currentUser.username, `Menyetujui karyawan: ${pending.username}`);
+                                showToast(`✅ ${pending.username} disetujui`);
+                                render();
+                            }
+                        });
+                    });
+                    document.querySelectorAll(".rejectKaryawan").forEach(btn => {
+                        btn.addEventListener("click", () => {
+                            const id = parseInt(btn.dataset.id);
+                            store.pendingRegistrations = store.pendingRegistrations.filter(p => p.id !== id);
+                            saveStore();
+                            addActivity(currentUser.username, `Menolak pendaftaran karyawan`);
+                            showToast("Pendaftaran ditolak");
+                            render();
+                        });
+                    });
+                    document.getElementById("closeModalBtn")?.addEventListener("click", () => { modalDiv.style.display = "none"; });
+                }
+            });
+            document.querySelectorAll(".resignBtn").forEach(btn => {
+                btn.addEventListener("click", () => {
+                    const id = parseInt(btn.dataset.id);
+                    const user = store.users.find(u=>u.id===id);
+                    if(user && confirm(`Resign ${user.username}?`)) {
+                        store.users = store.users.filter(u=>u.id !== id);
+                        saveStore();
+                        addActivity(currentUser.username, `Menghapus karyawan ${user.username} (resign)`);
+                        render();
+                    }
+                });
+            });
+        }
+    }
+    
+    function renderUangMasukList() {
+        const container = document.getElementById("daftarUangMasuk");
+        if(container) {
+            if(store.uangMasukList.length === 0) {
+                container.innerHTML = "<div style='text-align:center; padding:20px; color:#94a3b8;'>Belum ada pemasukan</div>";
+                return;
+            }
+            container.innerHTML = store.uangMasukList.map(um => `
+                <div class="uang-item">
+                    <div><i class="fas fa-money-bill-wave" style="color:#10b981;"></i> <strong>Rp ${um.jumlah.toLocaleString()}</strong></div>
+                    <div style="font-size:0.8rem; color:#475569;"><i class="far fa-calendar-alt"></i> ${um.tanggal}</div>
+                    <div style="font-size:0.7rem; background:#e2e8f0; padding:4px 12px; border-radius:30px;">${um.keterangan}</div>
+                </div>
+            `).join("");
+        }
+    }
+    
+    render();
+</script>
+</body>
+</html>
+```
