@@ -4,1055 +4,1840 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
     <title>Stok KKP | Manajemen Inventory</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Inter', sans-serif;
+        :root {
+            --ink: #0a0e1a;
+            --ink-2: #1c2438;
+            --ink-3: #374151;
+            --muted: #6b7280;
+            --subtle: #9ca3af;
+            --border: #e5e7eb;
+            --border-light: #f3f4f6;
+            --surface: #ffffff;
+            --surface-2: #f9fafb;
+            --surface-3: #f3f4f6;
+            --accent: #2563eb;
+            --accent-dark: #1d4ed8;
+            --accent-light: #eff6ff;
+            --accent-glow: rgba(37,99,235,0.15);
+            --green: #059669;
+            --green-light: #ecfdf5;
+            --amber: #d97706;
+            --amber-light: #fffbeb;
+            --red: #dc2626;
+            --red-light: #fef2f2;
+            --purple: #7c3aed;
+            --purple-light: #f5f3ff;
+            --r-xs: 8px;
+            --r-sm: 12px;
+            --r-md: 16px;
+            --r-lg: 24px;
+            --r-xl: 32px;
+            --r-pill: 999px;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.04);
+            --shadow-md: 0 4px 16px rgba(0,0,0,0.08), 0 2px 8px rgba(0,0,0,0.04);
+            --shadow-lg: 0 16px 40px rgba(0,0,0,0.1), 0 4px 16px rgba(0,0,0,0.06);
+            --shadow-xl: 0 32px 64px rgba(0,0,0,0.12), 0 8px 32px rgba(0,0,0,0.08);
         }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            background: linear-gradient(135deg, #f0f4fc 0%, #e6edf8 100%);
+            font-family: 'DM Sans', sans-serif;
+            background: var(--surface-2);
+            color: var(--ink);
             min-height: 100vh;
+            overflow-x: hidden;
         }
 
-        /* Navbar Glass */
-        .top-navbar {
-            background: rgba(255, 255, 255, 0.94);
-            backdrop-filter: blur(12px);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+        body::before {
+            content: '';
+            position: fixed;
+            top: -200px;
+            right: -200px;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(37,99,235,0.06) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        h1,h2,h3,h4,h5 { font-family: 'Syne', sans-serif; }
+
+        /* ─── NAVBAR ─── */
+        .navbar {
             position: sticky;
             top: 0;
-            z-index: 100;
-            border-bottom: 1px solid rgba(255,255,255,0.6);
+            z-index: 200;
+            background: rgba(255,255,255,0.92);
+            backdrop-filter: blur(20px) saturate(180%);
+            border-bottom: 1px solid var(--border);
         }
 
-        .navbar-container {
-            max-width: 1400px;
+        .navbar-inner {
+            max-width: 1320px;
             margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            height: 74px;
+            height: 68px;
             padding: 0 32px;
-        }
-
-        .logo-area {
             display: flex;
             align-items: center;
-            gap: 14px;
+            justify-content: space-between;
         }
 
-        .logo-icon {
-            background: linear-gradient(145deg, #2563eb, #1d4ed8);
-            width: 44px;
-            height: 44px;
-            border-radius: 16px;
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+
+        .brand-mark {
+            width: 40px;
+            height: 40px;
+            background: var(--ink);
+            border-radius: var(--r-sm);
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
-            font-size: 1.4rem;
-            box-shadow: 0 8px 16px -6px rgba(37,99,235,0.25);
-        }
-
-        .logo-text {
-            font-weight: 800;
-            font-size: 1.5rem;
-            background: linear-gradient(135deg, #0f172a, #2d3a5e);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            letter-spacing: -0.3px;
-        }
-
-        .nav-right {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-
-        .role-badge {
-            background: linear-gradient(145deg, #e0f2fe, #d9efff);
-            color: #0369a1;
-            padding: 8px 20px;
-            border-radius: 60px;
-            font-weight: 700;
-            font-size: 0.8rem;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .btn-logout {
-            background: rgba(0,0,0,0.03);
-            border: 1px solid rgba(0,0,0,0.06);
-            padding: 8px 20px;
-            border-radius: 60px;
-            font-weight: 500;
-            color: #475569;
-            cursor: pointer;
-            transition: 0.25s;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 0.8rem;
-        }
-
-        .btn-logout:hover {
-            background: #fee2e2;
-            border-color: #fecaca;
-            color: #dc2626;
-            transform: translateY(-1px);
-        }
-
-        /* Main Content */
-        .main-content {
-            max-width: 1400px;
-            margin: 32px auto;
-            padding: 0 28px;
-        }
-
-        .back-button {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            background: rgba(255,255,255,0.75);
-            backdrop-filter: blur(4px);
-            border: 1px solid rgba(255,255,255,0.8);
-            padding: 10px 24px;
-            border-radius: 60px;
-            font-weight: 500;
-            cursor: pointer;
-            margin-bottom: 28px;
-            transition: 0.2s;
-            color: #334155;
-        }
-
-        .back-button:hover {
-            background: white;
-            border-color: #cbd5e1;
-            transform: translateX(-4px);
-        }
-
-        /* Card Modern */
-        .card-modern {
-            background: rgba(255, 255, 255, 0.96);
-            backdrop-filter: blur(2px);
-            border-radius: 32px;
-            box-shadow: 0 20px 35px -12px rgba(0, 0, 0, 0.08);
+            font-size: 1.1rem;
+            position: relative;
             overflow: hidden;
-            border: 1px solid rgba(255,255,255,0.8);
         }
 
-        .card-header {
-            padding: 22px 28px;
-            border-bottom: 1px solid #f0f2f8;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 16px;
-            background: rgba(248,250,252,0.5);
+        .brand-mark::after {
+            content: '';
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            width: 24px;
+            height: 24px;
+            background: var(--accent);
+            border-radius: 50%;
         }
 
-        .card-header h3 {
-            font-size: 1.25rem;
-            font-weight: 700;
-            color: #0f172a;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
+        .brand-mark i { position: relative; z-index: 1; }
 
-        /* Search Box */
-        .search-box {
-            display: flex;
-            align-items: center;
-            background: white;
-            border: 1px solid #e2e8f0;
-            border-radius: 60px;
-            padding: 8px 20px;
-            gap: 12px;
-            transition: 0.2s;
-            min-width: 260px;
-        }
-        .search-box:focus-within {
-            border-color: #2563eb;
-            box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
-        }
-        .search-box i {
-            color: #94a3b8;
-        }
-        .search-box input {
-            border: none;
-            background: transparent;
-            padding: 10px 0;
-            font-size: 0.85rem;
-            width: 100%;
-            outline: none;
-        }
-
-        /* Table */
-        .table-container {
-            overflow-x: auto;
-        }
-        .stock-table {
-            width: 100%;
-            border-collapse: collapse;
-            min-width: 880px;
-        }
-        .stock-table th {
-            text-align: left;
-            padding: 18px 20px;
-            background: #fafcff;
-            font-weight: 600;
-            font-size: 0.8rem;
-            color: #475569;
-            border-bottom: 1px solid #eef2ff;
-        }
-        .stock-table td {
-            padding: 18px 20px;
-            border-bottom: 1px solid #f1f5f9;
-            font-size: 0.9rem;
-            color: #1e293b;
-            vertical-align: middle;
-        }
-        .product-name {
+        .brand-name {
+            font-family: 'Syne', sans-serif;
             font-weight: 800;
-            color: #0f172a;
+            font-size: 1.35rem;
+            color: var(--ink);
+            letter-spacing: -0.5px;
+        }
+
+        .brand-name span { color: var(--accent); }
+
+        .nav-actions { display: flex; align-items: center; gap: 12px; }
+
+        .badge-role {
             display: flex;
             align-items: center;
-            gap: 10px;
-        }
-        .badge-cost {
-            background: linear-gradient(145deg, #eef2ff, #e9efff);
-            padding: 6px 16px;
-            border-radius: 40px;
+            gap: 6px;
+            padding: 6px 14px;
+            background: var(--surface-3);
+            border: 1px solid var(--border);
+            border-radius: var(--r-pill);
             font-size: 0.75rem;
             font-weight: 600;
-            color: #2563eb;
-            display: inline-block;
+            color: var(--ink-3);
         }
-        .stock-low {
-            background: #fef3c7;
-            color: #b45309;
-            padding: 4px 12px;
-            border-radius: 30px;
-            font-weight: 600;
-            font-size: 0.7rem;
-        }
-        .empty-search {
-            text-align: center;
-            padding: 60px 20px;
-            color: #94a3b8;
-            font-size: 1rem;
-        }
-        .empty-search i {
-            font-size: 3rem;
-            margin-bottom: 16px;
-            display: block;
-            color: #cbd5e1;
-        }
-        .btn-group {
+
+        .badge-role.owner { background: var(--accent-light); border-color: #bfdbfe; color: var(--accent-dark); }
+        .badge-role.karyawan { background: var(--green-light); border-color: #a7f3d0; color: var(--green); }
+
+        .btn-nav-logout {
             display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-        .btn-sm {
-            padding: 7px 16px;
-            font-size: 0.7rem;
-            font-weight: 600;
-            border-radius: 40px;
-            border: none;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 18px;
+            background: transparent;
+            border: 1px solid var(--border);
+            border-radius: var(--r-pill);
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: var(--muted);
             cursor: pointer;
             transition: all 0.2s;
+        }
+
+        .btn-nav-logout:hover {
+            background: var(--red-light);
+            border-color: #fecaca;
+            color: var(--red);
+        }
+
+        /* ─── PAGE WRAPPER ─── */
+        .page {
+            max-width: 1320px;
+            margin: 0 auto;
+            padding: 36px 32px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ─── BACK BUTTON ─── */
+        .back-btn {
             display: inline-flex;
             align-items: center;
             gap: 8px;
-        }
-        .btn-primary { background: #2563eb; color: white; }
-        .btn-warning { background: #f59e0b; color: white; }
-        .btn-success { background: #10b981; color: white; }
-        .btn-secondary { background: #64748b; color: white; }
-        .btn-danger { background: #dc2626; color: white; }
-        .btn-outline { background: white; border: 1px solid #cbd5e1; color: #334155; }
-        .btn-sm:hover { transform: translateY(-2px); filter: brightness(0.96); }
-
-        /* Menu Grid */
-        .menu-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
-            gap: 24px;
-            margin-top: 24px;
-        }
-        .menu-item {
-            background: rgba(255,255,255,0.9);
-            backdrop-filter: blur(8px);
-            border-radius: 28px;
-            padding: 28px 20px;
-            text-align: center;
+            padding: 9px 20px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--r-pill);
+            font-size: 0.82rem;
+            font-weight: 500;
+            color: var(--muted);
             cursor: pointer;
-            transition: all 0.3s;
-            border: 1px solid rgba(255,255,255,0.6);
-        }
-        .menu-item i {
-            font-size: 2.2rem;
-            color: #2563eb;
-            margin-bottom: 14px;
-            display: block;
-        }
-        .menu-item span {
-            font-weight: 700;
-            font-size: 0.95rem;
-            color: #1e293b;
-        }
-        .menu-item:hover {
-            transform: translateY(-6px);
-            background: white;
-            border-color: #2563eb;
+            margin-bottom: 28px;
+            transition: all 0.2s;
+            box-shadow: var(--shadow-sm);
         }
 
-        /* Floating Notification Button - Pojok Kanan Bawah (Responsive untuk HP) */
-        .floating-notif {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            z-index: 1000;
-        }
-        .notif-button {
-            width: 56px;
-            height: 56px;
-            border-radius: 50%;
-            background: #2563eb;
-            color: white;
+        .back-btn:hover { background: var(--ink); color: white; border-color: var(--ink); transform: translateX(-3px); }
+
+        /* ─── LOGIN ─── */
+        .auth-wrap {
+            min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(37,99,235,0.4);
-            transition: all 0.3s;
+            padding: 24px;
+            background: var(--ink);
             position: relative;
-        }
-        .notif-button:hover {
-            transform: scale(1.08);
-            background: #1d4ed8;
-        }
-        .notif-button i {
-            font-size: 1.5rem;
-        }
-        .notif-badge {
-            position: absolute;
-            top: -5px;
-            right: -5px;
-            background: #ef4444;
-            color: white;
-            font-size: 0.7rem;
-            font-weight: 700;
-            min-width: 20px;
-            height: 20px;
-            border-radius: 30px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 0 6px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-        }
-        .notification-panel {
-            position: absolute;
-            bottom: 70px;
-            right: 0;
-            width: 360px;
-            background: white;
-            border-radius: 24px;
-            box-shadow: 0 20px 40px -12px rgba(0,0,0,0.25);
-            max-height: 450px;
-            overflow-y: auto;
-            display: none;
-            animation: slideUp 0.2s ease;
-        }
-        .notification-panel.show {
-            display: block;
-        }
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .notification-header {
-            padding: 16px 20px;
-            border-bottom: 1px solid #eef2ff;
-            font-weight: 700;
-            color: #1e293b;
-            position: sticky;
-            top: 0;
-            background: white;
-            border-radius: 24px 24px 0 0;
-        }
-        .notification-item {
-            padding: 14px 20px;
-            border-bottom: 1px solid #f1f5f9;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-        .notification-item:hover {
-            background: #f8fafc;
-        }
-        .notification-item.unread {
-            background: #eff6ff;
-        }
-        .notification-title {
-            font-weight: 700;
-            font-size: 0.85rem;
-            color: #1e293b;
-            margin-bottom: 4px;
-        }
-        .notification-message {
-            font-size: 0.75rem;
-            color: #64748b;
-        }
-        .notification-time {
-            font-size: 0.65rem;
-            color: #94a3b8;
-            margin-top: 6px;
-        }
-        .empty-notification {
-            padding: 40px 20px;
-            text-align: center;
-            color: #94a3b8;
+            overflow: hidden;
         }
 
-        .uang-item {
-            background: #ffffff;
-            border-radius: 24px;
-            padding: 16px 20px;
-            margin-bottom: 12px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 12px;
-            border: 1px solid #edf2f7;
-        }
-        .flex-between {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 16px;
-        }
-        input, select {
-            background: #ffffff;
-            border: 1px solid #e2e8f0;
-            padding: 12px 20px;
-            border-radius: 60px;
-            font-size: 0.9rem;
-            width: 100%;
-        }
-        input:focus {
-            outline: none;
-            border-color: #2563eb;
+        .auth-wrap::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: 
+                radial-gradient(ellipse 80% 60% at 20% 20%, rgba(37,99,235,0.3) 0%, transparent 60%),
+                radial-gradient(ellipse 60% 80% at 80% 80%, rgba(124,58,237,0.2) 0%, transparent 60%);
         }
 
-        /* Profit Styles */
-        .profit-summary { padding: 24px; }
-        .profit-row {
-            display: flex;
-            justify-content: space-between;
-            padding: 14px 0;
-            border-bottom: 1px solid #eef2ff;
-        }
-        .profit-total-card {
-            background: linear-gradient(145deg, #d1fae5, #a7f3d0);
-            border-radius: 28px;
-            padding: 24px;
-            text-align: center;
-            margin-top: 16px;
-        }
-        .profit-total-number {
-            font-size: 2rem;
+        .auth-wrap::after {
+            content: 'KKP';
+            position: absolute;
+            font-family: 'Syne', sans-serif;
             font-weight: 800;
-            color: #065f46;
+            font-size: 30vw;
+            color: rgba(255,255,255,0.02);
+            right: -5vw;
+            bottom: -5vw;
+            line-height: 1;
+            pointer-events: none;
         }
-        .profit-locked-card {
-            background: #fef3c7;
-            border-radius: 28px;
-            padding: 24px;
-            text-align: center;
-            margin-top: 16px;
+
+        .auth-card {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            max-width: 440px;
+            background: var(--surface);
+            border-radius: var(--r-xl);
+            padding: 44px 40px;
+            box-shadow: var(--shadow-xl);
         }
-        .profit-locked-title {
-            font-weight: 700;
-            color: #b45309;
+
+        .auth-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
             margin-bottom: 8px;
         }
 
+        .auth-title {
+            font-family: 'Syne', sans-serif;
+            font-size: 1.75rem;
+            font-weight: 800;
+            color: var(--ink);
+            letter-spacing: -0.5px;
+            margin-bottom: 6px;
+        }
+
+        .auth-sub {
+            color: var(--muted);
+            font-size: 0.9rem;
+            margin-bottom: 32px;
+        }
+
+        .field-group { margin-bottom: 16px; }
+
+        .field-label {
+            display: block;
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: var(--ink-3);
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .field-input {
+            width: 100%;
+            padding: 12px 16px;
+            background: var(--surface-2);
+            border: 1.5px solid var(--border);
+            border-radius: var(--r-md);
+            font-size: 0.92rem;
+            font-family: 'DM Sans', sans-serif;
+            color: var(--ink);
+            transition: all 0.2s;
+            outline: none;
+        }
+
+        .field-input:focus {
+            background: var(--surface);
+            border-color: var(--accent);
+            box-shadow: 0 0 0 4px var(--accent-glow);
+        }
+
+        .btn-primary-full {
+            width: 100%;
+            padding: 14px;
+            background: var(--ink);
+            color: white;
+            border: none;
+            border-radius: var(--r-md);
+            font-family: 'Syne', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .btn-primary-full:hover { background: var(--accent); transform: translateY(-1px); box-shadow: 0 8px 20px rgba(37,99,235,0.3); }
+
+        .auth-footer {
+            margin-top: 24px;
+            text-align: center;
+            font-size: 0.85rem;
+            color: var(--muted);
+        }
+
+        .auth-footer a { color: var(--accent); font-weight: 600; text-decoration: none; }
+
+        .demo-hint {
+            margin-top: 20px;
+            padding: 10px 16px;
+            background: var(--surface-3);
+            border-radius: var(--r-sm);
+            font-size: 0.75rem;
+            color: var(--muted);
+            text-align: center;
+        }
+
+        /* ─── DASHBOARD ─── */
+        .dash-greeting {
+            margin-bottom: 32px;
+        }
+
+        .dash-greeting h2 {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--ink);
+            letter-spacing: -0.5px;
+            margin-bottom: 4px;
+        }
+
+        .dash-greeting p { color: var(--muted); font-size: 0.9rem; }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 16px;
+        }
+
+        .menu-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--r-xl);
+            padding: 28px 24px;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .menu-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: var(--accent);
+            opacity: 0;
+            transition: opacity 0.25s;
+        }
+
+        .menu-card:hover {
+            transform: translateY(-6px);
+            border-color: var(--accent);
+            box-shadow: var(--shadow-lg), 0 0 0 1px var(--accent);
+        }
+
+        .menu-card:hover .menu-card-icon { background: var(--accent); color: white; }
+        .menu-card:hover .menu-card-title { color: var(--accent); }
+
+        .menu-card-icon {
+            width: 52px;
+            height: 52px;
+            background: var(--surface-3);
+            border-radius: var(--r-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            color: var(--ink-3);
+            margin-bottom: 20px;
+            transition: all 0.25s;
+        }
+
+        .menu-card-title {
+            font-family: 'Syne', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--ink);
+            transition: color 0.25s;
+        }
+
+        .menu-card-badge {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: var(--red);
+            color: white;
+            font-size: 0.65rem;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: var(--r-pill);
+        }
+
+        /* ─── CARDS ─── */
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--r-xl);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .card + .card { margin-top: 20px; }
+
+        .card-head {
+            padding: 20px 28px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 14px;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .card-head h3 {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--ink);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card-head h3 .head-icon {
+            width: 34px;
+            height: 34px;
+            background: var(--accent-light);
+            border-radius: var(--r-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent);
+            font-size: 0.9rem;
+        }
+
+        /* ─── SEARCH ─── */
+        .search-wrap {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--surface-2);
+            border: 1.5px solid var(--border);
+            border-radius: var(--r-pill);
+            padding: 8px 18px;
+            min-width: 260px;
+            transition: all 0.2s;
+        }
+
+        .search-wrap:focus-within {
+            border-color: var(--accent);
+            background: var(--surface);
+            box-shadow: 0 0 0 4px var(--accent-glow);
+        }
+
+        .search-wrap i { color: var(--subtle); font-size: 0.85rem; }
+
+        .search-wrap input {
+            border: none;
+            background: transparent;
+            font-size: 0.85rem;
+            font-family: 'DM Sans', sans-serif;
+            color: var(--ink);
+            outline: none;
+            width: 100%;
+        }
+
+        /* ─── BUTTONS ─── */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 8px 18px;
+            border-radius: var(--r-pill);
+            font-size: 0.78rem;
+            font-weight: 600;
+            font-family: 'DM Sans', sans-serif;
+            border: none;
+            cursor: pointer;
+            transition: all 0.18s;
+            white-space: nowrap;
+        }
+
+        .btn:hover { transform: translateY(-1px); }
+        .btn:active { transform: translateY(0); }
+
+        .btn-ink { background: var(--ink); color: white; }
+        .btn-ink:hover { background: var(--ink-2); box-shadow: 0 4px 12px rgba(10,14,26,0.3); }
+
+        .btn-blue { background: var(--accent); color: white; }
+        .btn-blue:hover { background: var(--accent-dark); box-shadow: 0 4px 12px rgba(37,99,235,0.35); }
+
+        .btn-green { background: var(--green); color: white; }
+        .btn-green:hover { box-shadow: 0 4px 12px rgba(5,150,105,0.35); }
+
+        .btn-amber { background: var(--amber); color: white; }
+        .btn-amber:hover { box-shadow: 0 4px 12px rgba(217,119,6,0.35); }
+
+        .btn-red { background: var(--red); color: white; }
+        .btn-red:hover { box-shadow: 0 4px 12px rgba(220,38,38,0.35); }
+
+        .btn-ghost { background: var(--surface-3); border: 1px solid var(--border); color: var(--ink-3); }
+        .btn-ghost:hover { background: var(--surface); }
+
+        /* ─── TABLE ─── */
+        .tbl-wrap { overflow-x: auto; }
+
+        table.tbl {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 860px;
+        }
+
+        table.tbl thead th {
+            padding: 14px 20px;
+            text-align: left;
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            color: var(--subtle);
+            background: var(--surface-2);
+            border-bottom: 1px solid var(--border);
+        }
+
+        table.tbl tbody tr {
+            transition: background 0.15s;
+        }
+
+        table.tbl tbody tr:hover { background: var(--surface-2); }
+
+        table.tbl tbody td {
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border-light);
+            font-size: 0.87rem;
+            color: var(--ink-3);
+            vertical-align: middle;
+        }
+
+        .td-product {
+            font-weight: 600;
+            color: var(--ink);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .td-product-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--accent);
+            flex-shrink: 0;
+        }
+
+        /* ─── STATUS CHIPS ─── */
+        .chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 4px 12px;
+            border-radius: var(--r-pill);
+            font-size: 0.72rem;
+            font-weight: 700;
+        }
+
+        .chip-blue { background: var(--accent-light); color: var(--accent-dark); }
+        .chip-amber { background: var(--amber-light); color: var(--amber); }
+        .chip-red { background: var(--red-light); color: var(--red); }
+        .chip-green { background: var(--green-light); color: var(--green); }
+
+        .stock-critical {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 5px 12px;
+            background: #fef3c7;
+            color: #b45309;
+            border-radius: var(--r-pill);
+            font-size: 0.72rem;
+            font-weight: 700;
+        }
+
+        /* ─── EMPTY ─── */
+        .empty-state {
+            padding: 64px 20px;
+            text-align: center;
+            color: var(--subtle);
+        }
+
+        .empty-state-icon {
+            width: 64px;
+            height: 64px;
+            background: var(--surface-3);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.6rem;
+            color: var(--subtle);
+            margin: 0 auto 16px;
+        }
+
+        .empty-state p { font-size: 0.9rem; }
+        .empty-state small { display: block; margin-top: 4px; font-size: 0.8rem; color: var(--subtle); }
+
+        /* ─── UANG MASUK ─── */
+        .txn-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+            padding: 16px 0;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .txn-item:last-child { border-bottom: none; }
+
+        .txn-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--green-light);
+            border-radius: var(--r-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--green);
+            font-size: 1rem;
+            flex-shrink: 0;
+        }
+
+        .txn-meta { flex: 1; }
+        .txn-amount { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1.05rem; color: var(--green); }
+        .txn-label { font-size: 0.78rem; color: var(--muted); margin-top: 2px; }
+        .txn-date { font-size: 0.75rem; color: var(--subtle); text-align: right; }
+
+        /* ─── PROFIT ─── */
+        .profit-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 0;
+            border-bottom: 1px solid var(--border-light);
+            font-size: 0.88rem;
+        }
+
+        .profit-row:last-of-type { border-bottom: none; }
+        .profit-row .label { color: var(--muted); }
+        .profit-row .val { font-weight: 600; color: var(--ink); }
+        .profit-row .val.deduct { color: var(--red); }
+
+        .profit-result {
+            margin-top: 20px;
+            padding: 28px;
+            background: var(--ink);
+            border-radius: var(--r-xl);
+            text-align: center;
+            color: white;
+        }
+
+        .profit-result.locked {
+            background: linear-gradient(135deg, #fffbeb, #fef3c7);
+        }
+
+        .profit-result .result-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.6;
+            margin-bottom: 10px;
+        }
+
+        .profit-result.locked .result-label { color: var(--amber); opacity: 1; }
+
+        .profit-result .result-num {
+            font-family: 'Syne', sans-serif;
+            font-size: 2.4rem;
+            font-weight: 800;
+        }
+
+        .profit-result.locked .result-num { color: var(--ink); }
+        .profit-result.locked .result-sub { color: var(--amber); font-size: 0.82rem; margin-top: 8px; }
+
+        /* ─── MODAL TABLE ─── */
+        .modal-grand {
+            padding: 24px 28px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--ink);
+            color: white;
+            border-radius: 0 0 var(--r-xl) var(--r-xl);
+        }
+
+        .modal-grand .label { font-size: 0.85rem; opacity: 0.6; }
+        .modal-grand .value { font-family: 'Syne', sans-serif; font-size: 1.5rem; font-weight: 800; }
+
+        /* ─── LOG ─── */
+        .log-item {
+            display: flex;
+            gap: 14px;
+            padding: 14px 0;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .log-item:last-child { border-bottom: none; }
+
+        .log-avatar {
+            width: 34px;
+            height: 34px;
+            background: var(--surface-3);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            color: var(--muted);
+            flex-shrink: 0;
+        }
+
+        .log-content { flex: 1; }
+        .log-user { font-weight: 600; font-size: 0.82rem; color: var(--ink); }
+        .log-action { font-size: 0.82rem; color: var(--muted); margin-top: 2px; }
+        .log-time { font-size: 0.7rem; color: var(--subtle); margin-top: 4px; }
+
+        /* ─── FLOATING NOTIF ─── */
+        .floating-notif {
+            position: fixed;
+            bottom: 28px;
+            right: 28px;
+            z-index: 1000;
+        }
+
+        .notif-fab {
+            width: 54px;
+            height: 54px;
+            background: var(--ink);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 8px 24px rgba(10,14,26,0.3);
+            transition: all 0.25s;
+            position: relative;
+            font-size: 1.2rem;
+        }
+
+        .notif-fab:hover { background: var(--accent); transform: scale(1.08); }
+
+        .notif-count {
+            position: absolute;
+            top: -4px;
+            right: -4px;
+            background: var(--red);
+            color: white;
+            font-size: 0.65rem;
+            font-weight: 800;
+            min-width: 20px;
+            height: 20px;
+            border-radius: var(--r-pill);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 5px;
+            border: 2px solid white;
+        }
+
+        .notif-panel {
+            position: absolute;
+            bottom: 64px;
+            right: 0;
+            width: 360px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--r-xl);
+            box-shadow: var(--shadow-xl);
+            max-height: 460px;
+            overflow: hidden;
+            display: none;
+            flex-direction: column;
+            animation: popUp 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .notif-panel.open { display: flex; }
+
+        @keyframes popUp {
+            from { opacity: 0; transform: scale(0.9) translateY(8px); transform-origin: bottom right; }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        .notif-panel-head {
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border);
+            font-family: 'Syne', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .notif-list { overflow-y: auto; flex: 1; }
+
+        .notif-item {
+            padding: 14px 20px;
+            border-bottom: 1px solid var(--border-light);
+            cursor: pointer;
+            transition: background 0.15s;
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+        }
+
+        .notif-item:hover { background: var(--surface-2); }
+        .notif-item.unread { background: var(--accent-light); }
+
+        .notif-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--accent);
+            flex-shrink: 0;
+            margin-top: 6px;
+        }
+
+        .notif-item.unread .notif-dot { background: var(--accent); }
+        .notif-item:not(.unread) .notif-dot { background: transparent; }
+
+        .notif-info { flex: 1; }
+        .notif-title { font-weight: 600; font-size: 0.82rem; color: var(--ink); }
+        .notif-msg { font-size: 0.76rem; color: var(--muted); margin-top: 2px; }
+        .notif-ts { font-size: 0.68rem; color: var(--subtle); margin-top: 4px; }
+
+        .notif-empty { padding: 40px 20px; text-align: center; color: var(--subtle); font-size: 0.85rem; }
+
+        /* ─── TOAST ─── */
         .toast {
             position: fixed;
             bottom: 28px;
             left: 50%;
             transform: translateX(-50%);
-            background: #1e293b;
+            background: var(--ink);
             color: white;
-            padding: 14px 28px;
-            border-radius: 80px;
-            font-size: 0.85rem;
-            z-index: 1200;
-            animation: slideUpToast 0.3s ease;
-        }
-        @keyframes slideUpToast {
-            from { opacity: 0; transform: translateX(-50%) translateY(20px);}
-            to { opacity: 1; transform: translateX(-50%) translateY(0);}
+            padding: 12px 24px;
+            border-radius: var(--r-pill);
+            font-size: 0.83rem;
+            font-weight: 500;
+            z-index: 2000;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: var(--shadow-lg);
+            animation: toastIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
+        @keyframes toastIn {
+            from { opacity: 0; transform: translateX(-50%) translateY(16px); }
+            to { opacity: 1; transform: translateX(-50%) translateY(0); }
+        }
+
+        /* ─── MODAL ─── */
         .modal-backdrop {
             position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0,0,0,0.4);
-            backdrop-filter: blur(6px);
+            inset: 0;
+            background: rgba(10,14,26,0.5);
+            backdrop-filter: blur(8px);
+            z-index: 1500;
             display: flex;
             align-items: center;
             justify-content: center;
-            z-index: 1000;
-        }
-        .modal-card {
-            background: white;
-            max-width: 520px;
-            width: 90%;
-            border-radius: 44px;
-            padding: 32px;
+            padding: 24px;
+            animation: fadeIn 0.2s ease;
         }
 
-        /* Responsive untuk HP */
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        .modal-box {
+            background: var(--surface);
+            border-radius: var(--r-xl);
+            padding: 36px;
+            width: 100%;
+            max-width: 500px;
+            animation: slideIn 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(20px) scale(0.97); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .modal-box h3 {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+        }
+
+        /* ─── KARYAWAN ─── */
+        .karyawan-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .karyawan-avatar {
+            width: 38px;
+            height: 38px;
+            background: var(--surface-3);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: var(--ink-3);
+        }
+
+        /* ─── INLINE FORM ─── */
+        .inline-form {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: flex-end;
+        }
+
+        .inline-form .field-group { flex: 1; min-width: 160px; margin-bottom: 0; }
+
+        /* ─── STAT STRIP ─── */
+        .stat-strip {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 28px;
+            background: var(--surface-2);
+            border-bottom: 1px solid var(--border-light);
+            flex-wrap: wrap;
+        }
+
+        .stat-strip-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.78rem;
+        }
+
+        .stat-strip-item .dot { width: 8px; height: 8px; border-radius: 50%; }
+
+        /* ─── RESPONSIVE ─── */
         @media (max-width: 768px) {
-            .navbar-container { padding: 0 20px; height: 64px; }
-            .main-content { padding: 0 20px; }
-            .logo-text { font-size: 1.2rem; }
-            .logo-icon { width: 36px; height: 36px; font-size: 1.1rem; }
-            .notification-panel { width: 320px; right: 0; bottom: 80px; }
-            .search-box { min-width: 100%; width: 100%; }
-            .card-header { flex-direction: column; align-items: stretch; }
-            .floating-notif { bottom: 20px; right: 20px; }
-            .notif-button { width: 48px; height: 48px; }
-            .notif-button i { font-size: 1.3rem; }
-            .role-badge { padding: 4px 12px; font-size: 0.7rem; }
-            .btn-logout { padding: 6px 14px; font-size: 0.7rem; }
-            .menu-item { padding: 20px 12px; }
-            .menu-item i { font-size: 1.6rem; }
+            .navbar-inner { padding: 0 20px; }
+            .page { padding: 24px 20px; }
+            .card-head { flex-direction: column; align-items: stretch; }
+            .search-wrap { min-width: unset; width: 100%; }
+            .notif-panel { width: 300px; right: -8px; }
+            .menu-grid { grid-template-columns: repeat(2, 1fr); }
+            .auth-card { padding: 36px 28px; }
         }
-        
+
         @media (max-width: 480px) {
-            .notification-panel { width: 280px; right: -10px; }
-            .stock-table th, .stock-table td { padding: 12px 10px; font-size: 0.75rem; }
-            .btn-sm { padding: 5px 10px; font-size: 0.65rem; }
+            .brand-name { font-size: 1.1rem; }
+            .notif-panel { width: 280px; }
+            table.tbl th, table.tbl td { padding: 12px 12px; font-size: 0.78rem; }
         }
+
+        /* Section titles */
+        .section-title {
+            font-family: 'Syne', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--ink);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .section-title::before {
+            content: '';
+            display: block;
+            width: 4px;
+            height: 16px;
+            background: var(--accent);
+            border-radius: 2px;
+        }
+
+        /* Highlight on notif click */
+        @keyframes rowHighlight {
+            0%,100% { background: transparent; }
+            30% { background: var(--amber-light); }
+        }
+
+        .row-highlighted { animation: rowHighlight 1.5s ease; }
     </style>
 </head>
 <body>
 <div id="app"></div>
 
 <script>
-    // ======================== DATA STORE ========================
-    let store = {
-        users: [ { id: 1, username: "owner", password: "owner", role: "owner", status: "approved" } ],
-        pendingRegistrations: [],
-        inventory: [
-            { id: 101, nama: "Beras Premium 5kg", stock: 25, hargaJual: 75000, averageCost: 55000 },
-            { id: 102, nama: "Minyak Goreng 1L", stock: 4, hargaJual: 20000, averageCost: 14000 },
-            { id: 103, nama: "Gula Pasir 1kg", stock: 30, hargaJual: 18000, averageCost: 13000 },
-            { id: 104, nama: "Telur Ayam (1 papan)", stock: 3, hargaJual: 55000, averageCost: 45000 },
-            { id: 105, nama: "Tepung Terigu 1kg", stock: 22, hargaJual: 15000, averageCost: 10000 }
-        ],
-        uangMasukList: [
-            { id: 1, jumlah: 8750000, tanggal: "2026-04-01", keterangan: "Penjualan reguler" },
-            { id: 2, jumlah: 4200000, tanggal: "2026-04-03", keterangan: "Order grosir" }
-        ],
-        biayaKonsumsi: 1250000,
-        biayaOperasional: 800000,
-        activityLogs: [ { id: 1, timestamp: new Date().toLocaleString(), username: "system", action: "Sistem Stok KKP siap digunakan" } ],
-        notifications: []
-    };
+// ======================== DATA STORE ========================
+let store = {
+    users: [{ id: 1, username: "owner", password: "owner", role: "owner", status: "approved" }],
+    pendingRegistrations: [],
+    inventory: [
+        { id: 101, nama: "Beras Premium 5kg", stock: 25, hargaJual: 75000, averageCost: 55000 },
+        { id: 102, nama: "Minyak Goreng 1L", stock: 4, hargaJual: 20000, averageCost: 14000 },
+        { id: 103, nama: "Gula Pasir 1kg", stock: 30, hargaJual: 18000, averageCost: 13000 },
+        { id: 104, nama: "Telur Ayam (1 papan)", stock: 3, hargaJual: 55000, averageCost: 45000 },
+        { id: 105, nama: "Tepung Terigu 1kg", stock: 22, hargaJual: 15000, averageCost: 10000 }
+    ],
+    uangMasukList: [
+        { id: 1, jumlah: 8750000, tanggal: "2026-04-01", keterangan: "Penjualan reguler" },
+        { id: 2, jumlah: 4200000, tanggal: "2026-04-03", keterangan: "Order grosir" }
+    ],
+    biayaKonsumsi: 1250000,
+    biayaOperasional: 800000,
+    activityLogs: [{ id: 1, timestamp: new Date().toLocaleString(), username: "system", action: "Sistem Stok KKP siap digunakan" }],
+    notifications: []
+};
 
-    function loadStore() { const s = localStorage.getItem("stok_kkp_final_v4"); if(s) { try { const d=JSON.parse(s); Object.assign(store, d); } catch(e){} } }
-    function saveStore() { localStorage.setItem("stok_kkp_final_v4", JSON.stringify(store)); }
-    loadStore();
+function loadStore() { const s = localStorage.getItem("stok_kkp_final_v4"); if (s) { try { const d = JSON.parse(s); Object.assign(store, d); } catch (e) {} } }
+function saveStore() { localStorage.setItem("stok_kkp_final_v4", JSON.stringify(store)); }
+loadStore();
 
-    function addActivity(username, action) { 
-        store.activityLogs.unshift({ id: Date.now(), timestamp: new Date().toLocaleString('id-ID'), username, action });
-        if(store.activityLogs.length > 300) store.activityLogs.pop();
+function addActivity(username, action) {
+    store.activityLogs.unshift({ id: Date.now(), timestamp: new Date().toLocaleString('id-ID'), username, action });
+    if (store.activityLogs.length > 300) store.activityLogs.pop();
+    saveStore();
+}
+
+function addNotification(title, message, type, barangId = null) {
+    store.notifications.unshift({ id: Date.now(), title, message, type, timestamp: new Date().toLocaleString(), read: false, barangId });
+    if (store.notifications.length > 50) store.notifications.pop();
+    saveStore();
+    render();
+}
+
+function checkAndNotifyLowStock() {
+    const lowStockItems = store.inventory.filter(item => item.stock <= 5 && item.stock > 0);
+    const emptyStockItems = store.inventory.filter(item => item.stock === 0);
+    lowStockItems.forEach(item => {
+        const existing = store.notifications.find(n => n.barangId === item.id && n.title === "Stok Menipis" && !n.read);
+        if (!existing) addNotification("Stok Menipis", `${item.nama} tersisa ${item.stock} pcs, segera restock!`, "warning", item.id);
+    });
+    emptyStockItems.forEach(item => {
+        const existing = store.notifications.find(n => n.barangId === item.id && n.title === "Stok Habis" && !n.read);
+        if (!existing) addNotification("Stok Habis", `${item.nama} sudah habis, perlu restock segera!`, "danger", item.id);
+    });
+}
+
+function markNotificationAsRead(notifId) {
+    const n = store.notifications.find(n => n.id === notifId);
+    if (n) { n.read = true; saveStore(); }
+}
+
+function getUnreadCount() { return store.notifications.filter(n => !n.read).length; }
+
+function toast(msg) {
+    const t = document.createElement('div');
+    t.className = 'toast';
+    t.innerHTML = `<i class="fas fa-check-circle" style="color:#4ade80;"></i> ${msg}`;
+    document.body.appendChild(t);
+    setTimeout(() => t.remove(), 2500);
+}
+
+let currentUser = null, currentView = "login";
+let notifOpen = false;
+
+function updateAverageCost(item, newQty, newUnitCost) {
+    const totalCostBefore = item.stock * item.averageCost;
+    const newTotalCost = newQty * newUnitCost;
+    const newStock = item.stock + newQty;
+    item.averageCost = Math.round((totalCostBefore + newTotalCost) / newStock);
+    item.stock = newStock;
+    addActivity(currentUser.username, `Update modal ${item.nama}: beli ${newQty} pcs @Rp ${newUnitCost.toLocaleString()} → rata-rata baru Rp ${item.averageCost.toLocaleString()}`);
+    saveStore();
+    checkAndNotifyLowStock();
+}
+
+function resetUangMasuk() {
+    if (confirm("Reset semua data pemasukan? Aksi ini tidak dapat dibatalkan.")) {
+        store.uangMasukList = [];
         saveStore();
+        addActivity(currentUser.username, "Meriset seluruh data uang masuk");
+        toast("Semua data uang masuk direset");
+        render();
     }
-    
-    function addNotification(title, message, type, barangId = null) {
-        store.notifications.unshift({ 
-            id: Date.now(), 
-            title, 
-            message, 
-            type, 
-            timestamp: new Date().toLocaleString(),
-            read: false,
-            barangId: barangId
-        });
-        if(store.notifications.length > 50) store.notifications.pop();
+}
+
+function hapusBarang(itemId, itemNama) {
+    if (confirm(`Hapus barang "${itemNama}" secara permanen?`)) {
+        store.inventory = store.inventory.filter(item => item.id !== itemId);
         saveStore();
-        render(); // Refresh untuk update count
-    }
-    
-    function checkAndNotifyLowStock() {
-        const lowStockItems = store.inventory.filter(item => item.stock <= 5 && item.stock > 0);
-        const emptyStockItems = store.inventory.filter(item => item.stock === 0);
-        
-        lowStockItems.forEach(item => {
-            const existingNotif = store.notifications.find(n => n.barangId === item.id && n.title === "Stok Menipis" && !n.read);
-            if(!existingNotif) {
-                addNotification("Stok Menipis", `${item.nama} tersisa ${item.stock} pcs, segera restock!`, "warning", item.id);
-            }
-        });
-        
-        emptyStockItems.forEach(item => {
-            const existingNotif = store.notifications.find(n => n.barangId === item.id && n.title === "Stok Habis" && !n.read);
-            if(!existingNotif) {
-                addNotification("Stok Habis", `${item.nama} sudah habis, perlu restock segera!`, "danger", item.id);
-            }
-        });
-    }
-    
-    function markNotificationAsRead(notifId) {
-        const notif = store.notifications.find(n => n.id === notifId);
-        if(notif) {
-            notif.read = true;
-            saveStore();
-        }
-    }
-    
-    function getUnreadCount() {
-        return store.notifications.filter(n => !n.read).length;
-    }
-
-    function toast(msg) { 
-        const t = document.createElement('div'); 
-        t.className = 'toast'; 
-        t.innerHTML = `<i class="fas fa-check-circle"></i> ${msg}`; 
-        document.body.appendChild(t); 
-        setTimeout(() => t.remove(), 2500);
-    }
-
-    let currentUser = null, currentView = "login";
-    let notificationPanelOpen = false;
-
-    function updateAverageCost(item, newQty, newUnitCost) {
-        const totalCostBefore = item.stock * item.averageCost;
-        const newTotalCost = newQty * newUnitCost;
-        const newStock = item.stock + newQty;
-        item.averageCost = Math.round((totalCostBefore + newTotalCost) / newStock);
-        item.stock = newStock;
-        addActivity(currentUser.username, `Update modal ${item.nama}: beli ${newQty} pcs @Rp ${newUnitCost.toLocaleString()} -> rata-rata baru Rp ${item.averageCost.toLocaleString()}`);
-        saveStore();
+        addActivity(currentUser.username, `Menghapus barang: ${itemNama}`);
+        toast(`Barang "${itemNama}" telah dihapus`);
         checkAndNotifyLowStock();
+        render();
     }
+}
 
-    function resetUangMasuk() {
-        if(confirm("Reset semua data pemasukan? Aksi ini tidak dapat dibatalkan.")) {
-            store.uangMasukList = [];
-            saveStore();
-            addActivity(currentUser.username, "Meriset seluruh data uang masuk");
-            toast("Semua data uang masuk direset");
-            render();
-        }
-    }
+// ─── RENDER FUNCTIONS ───
 
-    function hapusBarang(itemId, itemNama) {
-        if(confirm(`Hapus barang "${itemNama}" secara permanen?`)) {
-            store.inventory = store.inventory.filter(item => item.id !== itemId);
-            saveStore();
-            addActivity(currentUser.username, `Menghapus barang: ${itemNama}`);
-            toast(`Barang "${itemNama}" telah dihapus`);
-            checkAndNotifyLowStock();
-            render();
-        }
-    }
-
-    function render() {
-        const app = document.getElementById("app");
-        if(!currentUser) {
-            app.innerHTML = currentView === "register" ? renderRegister() : renderLogin();
-        } else {
-            if(currentUser.role === "owner") {
-                if(currentView === "stokView") app.innerHTML = renderStok(true);
-                else if(currentView === "uangMasukView") app.innerHTML = renderUangMasuk();
-                else if(currentView === "profitView") app.innerHTML = renderProfit();
-                else if(currentView === "modalView") app.innerHTML = renderModal();
-                else if(currentView === "logActivityView") app.innerHTML = renderLog();
-                else if(currentView === "listKaryawanView") app.innerHTML = renderKaryawan();
-                else app.innerHTML = renderOwnerDashboard();
-            } else {
-                if(currentView === "stokView") app.innerHTML = renderStok(false);
-                else if(currentView === "uangMasukView") app.innerHTML = renderUangMasuk();
-                else if(currentView === "profitView") app.innerHTML = renderProfit();
-                else app.innerHTML = renderKaryawanDashboard();
-            }
-        }
-        attachEvents();
-    }
-
-    // ========== UI KOMPONEN ==========
-    function renderLogin() {
-        return `<div class="login-container" style="display:flex;justify-content:center;align-items:center;min-height:100vh;padding:20px;">
-            <div style="max-width:460px;width:100%;background:white;border-radius:48px;padding:40px 32px;text-align:center;box-shadow:0 30px 50px -20px rgba(0,0,0,0.2);">
-                <div class="logo-area" style="justify-content:center;margin-bottom:24px;"><div class="logo-icon"><i class="fas fa-boxes"></i></div><span class="logo-text">Stok KKP</span></div>
-                <p style="margin-bottom:28px;color:#475569;">Manajemen Stok & Keuangan Modern</p>
-                <input id="loginUser" placeholder="Username" style="margin-bottom:16px;"><input id="loginPass" type="password" placeholder="Password" style="margin-bottom:24px;">
-                <button id="btnLogin" style="background:#2563eb;width:100%;padding:14px;border:none;border-radius:60px;color:white;font-weight:700;">Masuk <i class="fas fa-arrow-right"></i></button>
-                <p style="margin-top:24px;"><a href="#" id="gotoReg" style="color:#2563eb;">Daftar akun karyawan</a></p>
-                <div style="font-size:12px;margin-top:20px;background:#f1f5f9;padding:8px;border-radius:40px;">Demo: owner / owner</div>
+function navbarHTML(roleName) {
+    const isOwner = roleName === 'owner' || roleName === 'Owner';
+    return `<nav class="navbar">
+        <div class="navbar-inner">
+            <div class="brand">
+                <div class="brand-mark"><i class="fas fa-boxes"></i></div>
+                <span class="brand-name">Stok<span>KKP</span></span>
             </div>
-        </div>`;
-    }
-    
-    function renderRegister() {
-        return `<div class="login-container" style="display:flex;justify-content:center;align-items:center;min-height:100vh;padding:20px;">
-            <div style="max-width:460px;width:100%;background:white;border-radius:48px;padding:36px;margin:20px auto;">
-                <h2 style="margin-bottom:12px;">Daftar Karyawan</h2>
-                <p style="color:#f59e0b;margin-bottom:20px;"><i class="fas fa-clock"></i> Menunggu persetujuan Owner</p>
-                <input id="regUser" placeholder="Username" style="margin-bottom:12px;"><input id="regPass" type="password" placeholder="Password" style="margin-bottom:12px;"><input id="regConfirm" type="password" placeholder="Konfirmasi" style="margin-bottom:24px;">
-                <button id="btnReg" style="background:#2563eb;width:100%;padding:14px;border:none;border-radius:60px;color:white;font-weight:700;">Kirim Pendaftaran</button>
-                <p style="margin-top:20px;"><a href="#" id="gotoLogin">Kembali Login</a></p>
+            <div class="nav-actions">
+                <span class="badge-role ${isOwner ? 'owner' : 'karyawan'}">
+                    <i class="fas fa-${isOwner ? 'crown' : 'id-badge'}"></i> ${isOwner ? 'Owner' : 'Karyawan'}
+                </span>
+                <button id="logoutBtn" class="btn-nav-logout"><i class="fas fa-sign-out-alt"></i> Keluar</button>
             </div>
-        </div>`;
-    }
-    
-    function renderOwnerDashboard() {
-        const pCount = store.pendingRegistrations.length;
-        return `
-        <div class="top-navbar"><div class="navbar-container">
-            <div class="logo-area"><div class="logo-icon"><i class="fas fa-boxes"></i></div><span class="logo-text">Stok KKP</span></div>
-            <div class="nav-right">
-                <span class="role-badge"><i class="fas fa-crown"></i> Owner</span>
-                <button id="logoutBtn" class="btn-logout"><i class="fas fa-sign-out-alt"></i> Keluar</button>
-            </div>
-        </div></div>
-        <div class="main-content"><div class="menu-grid">
-            <div class="menu-item" data-view="stokView"><i class="fas fa-cubes"></i><span>Stok Barang</span></div>
-            <div class="menu-item" data-view="uangMasukView"><i class="fas fa-coins"></i><span>Uang Masuk</span></div>
-            <div class="menu-item" data-view="profitView"><i class="fas fa-chart-line"></i><span>Profit</span></div>
-            <div class="menu-item" data-view="modalView"><i class="fas fa-hand-holding-usd"></i><span>Modal</span></div>
-            <div class="menu-item" data-view="logActivityView"><i class="fas fa-history"></i><span>Log Aktivitas</span></div>
-            <div class="menu-item" data-view="listKaryawanView"><i class="fas fa-users"></i><span>Karyawan ${pCount?`(${pCount})`:''}</span></div>
-        </div></div>`;
-    }
-    
-    function renderKaryawanDashboard() {
-        return `<div class="top-navbar"><div class="navbar-container">
-            <div class="logo-area"><div class="logo-icon"><i class="fas fa-boxes"></i></div><span class="logo-text">Stok KKP</span></div>
-            <div class="nav-right">
-                <span class="role-badge"><i class="fas fa-id-badge"></i> Karyawan</span>
-                <button id="logoutBtn" class="btn-logout"><i class="fas fa-sign-out-alt"></i> Keluar</button>
-            </div>
-        </div></div>
-        <div class="main-content"><div class="menu-grid"><div class="menu-item" data-view="stokView"><i class="fas fa-cubes"></i><span>Stok Barang</span></div></div>
-        <div style="margin-top:28px; background:rgba(255,255,255,0.7); border-radius:32px; padding:28px; text-align:center;">Menu lainnya hanya untuk owner</div></div>`;
-    }
-    
-    function renderStok(isOwner) {
-        return `
-        <div class="top-navbar"><div class="navbar-container">
-            <div class="logo-area"><div class="logo-icon"><i class="fas fa-boxes"></i></div><span class="logo-text">Stok KKP</span></div>
-            <div class="nav-right">
-                <span class="role-badge">${currentUser?.role === "owner" ? "Owner" : "Karyawan"}</span>
-                <button id="logoutBtn" class="btn-logout"><i class="fas fa-sign-out-alt"></i> Keluar</button>
-            </div>
-        </div></div>
-        <div class="main-content"><div class="back-button" id="backBtn"><i class="fas fa-arrow-left"></i> Kembali ke Dashboard</div>
-        <div class="card-modern"><div class="card-header">
-            <h3><i class="fas fa-warehouse"></i> Manajemen Stok</h3>
-            <div class="search-box"><i class="fas fa-search"></i><input type="text" id="searchStokInput" placeholder="Cari barang..."></div>
-            <button id="addBarangBtn" class="btn-sm btn-success"><i class="fas fa-plus"></i> Tambah Barang</button>
         </div>
-        <div class="table-container"><table class="stock-table"><thead><tr><th>Produk</th><th>Stok</th><th>Harga Jual</th><th>Modal Rata-rata</th><th>Aksi Stok</th><th>Update Modal / Harga</th>${isOwner ? '<th>Hapus</th>' : ''}</thead><tbody id="stokTbody"></tbody></table></div></div></div>`;
-    }
-    
-    // Fungsi render notifikasi floating
-    function renderFloatingNotification() {
-        const unreadCount = getUnreadCount();
-        const notifHtml = `
-            <div class="floating-notif">
-                <div class="notif-button" id="floatingNotifBtn">
-                    <i class="fas fa-bell"></i>
-                    ${unreadCount > 0 ? `<span class="notif-badge">${unreadCount > 9 ? '9+' : unreadCount}</span>` : ''}
-                </div>
-                <div id="floatingNotificationPanel" class="notification-panel"></div>
+    </nav>`;
+}
+
+function renderLogin() {
+    return `<div class="auth-wrap">
+        <div class="auth-card">
+            <div class="auth-logo">
+                <div class="brand-mark" style="background:var(--ink);"><i class="fas fa-boxes"></i></div>
+                <span class="brand-name" style="font-size:1.5rem;">Stok<span>KKP</span></span>
             </div>
-        `;
-        return notifHtml;
-    }
-    
-    function renderNotificationPanel() {
-        const panel = document.getElementById("floatingNotificationPanel");
-        if(!panel) return;
-        const unreadCount = getUnreadCount();
-        if(store.notifications.length === 0) {
-            panel.innerHTML = `<div class="empty-notification"><i class="fas fa-bell-slash"></i><p>Tidak ada notifikasi</p></div>`;
-        } else {
-            panel.innerHTML = `<div class="notification-header">Notifikasi ${unreadCount > 0 ? `(${unreadCount} baru)` : ''}</div>
-            ${store.notifications.map(n => `
-                <div class="notification-item ${!n.read ? 'unread' : ''}" data-id="${n.id}" data-barang-id="${n.barangId || ''}">
-                    <div class="notification-title">${n.title}</div>
-                    <div class="notification-message">${n.message}</div>
-                    <div class="notification-time">${n.timestamp}</div>
+            <h1 class="auth-title" style="margin-top:24px;">Selamat Datang</h1>
+            <p class="auth-sub">Login untuk mengelola stok & keuangan toko</p>
+            <div class="field-group">
+                <label class="field-label">Username</label>
+                <input id="loginUser" class="field-input" placeholder="Masukkan username">
+            </div>
+            <div class="field-group">
+                <label class="field-label">Password</label>
+                <input id="loginPass" type="password" class="field-input" placeholder="••••••••">
+            </div>
+            <button id="btnLogin" class="btn-primary-full">Masuk <i class="fas fa-arrow-right"></i></button>
+            <div class="auth-footer"><a href="#" id="gotoReg">Daftar sebagai karyawan →</a></div>
+            <div class="demo-hint"><i class="fas fa-info-circle"></i> Demo: username <strong>owner</strong> / password <strong>owner</strong></div>
+        </div>
+    </div>`;
+}
+
+function renderRegister() {
+    return `<div class="auth-wrap">
+        <div class="auth-card">
+            <h1 class="auth-title">Daftar Karyawan</h1>
+            <p class="auth-sub" style="color:var(--amber);"><i class="fas fa-clock"></i> Menunggu persetujuan Owner</p>
+            <div class="field-group">
+                <label class="field-label">Username</label>
+                <input id="regUser" class="field-input" placeholder="Pilih username">
+            </div>
+            <div class="field-group">
+                <label class="field-label">Password</label>
+                <input id="regPass" type="password" class="field-input" placeholder="••••••••">
+            </div>
+            <div class="field-group">
+                <label class="field-label">Konfirmasi Password</label>
+                <input id="regConfirm" type="password" class="field-input" placeholder="••••••••">
+            </div>
+            <button id="btnReg" class="btn-primary-full">Kirim Pendaftaran <i class="fas fa-paper-plane"></i></button>
+            <div class="auth-footer"><a href="#" id="gotoLogin">← Kembali Login</a></div>
+        </div>
+    </div>`;
+}
+
+function renderOwnerDashboard() {
+    const pCount = store.pendingRegistrations.length;
+    const now = new Date();
+    const hours = now.getHours();
+    const greeting = hours < 12 ? 'Selamat Pagi' : hours < 15 ? 'Selamat Siang' : hours < 18 ? 'Selamat Sore' : 'Selamat Malam';
+    return `${navbarHTML('owner')}
+    <div class="page">
+        <div class="dash-greeting">
+            <h2>${greeting}, ${currentUser.username} 👋</h2>
+            <p>Kelola stok dan keuangan toko dari satu tempat</p>
+        </div>
+        <div class="menu-grid">
+            <div class="menu-card" data-view="stokView">
+                <div class="menu-card-icon"><i class="fas fa-cubes"></i></div>
+                <div class="menu-card-title">Stok Barang</div>
+            </div>
+            <div class="menu-card" data-view="uangMasukView">
+                <div class="menu-card-icon"><i class="fas fa-coins"></i></div>
+                <div class="menu-card-title">Uang Masuk</div>
+            </div>
+            <div class="menu-card" data-view="profitView">
+                <div class="menu-card-icon"><i class="fas fa-chart-line"></i></div>
+                <div class="menu-card-title">Profit</div>
+            </div>
+            <div class="menu-card" data-view="modalView">
+                <div class="menu-card-icon"><i class="fas fa-hand-holding-usd"></i></div>
+                <div class="menu-card-title">Modal</div>
+            </div>
+            <div class="menu-card" data-view="logActivityView">
+                <div class="menu-card-icon"><i class="fas fa-history"></i></div>
+                <div class="menu-card-title">Log Aktivitas</div>
+            </div>
+            <div class="menu-card" data-view="listKaryawanView">
+                ${pCount ? `<div class="menu-card-badge">${pCount}</div>` : ''}
+                <div class="menu-card-icon"><i class="fas fa-users"></i></div>
+                <div class="menu-card-title">Karyawan${pCount ? ` (${pCount})` : ''}</div>
+            </div>
+        </div>
+    </div>`;
+}
+
+function renderKaryawanDashboard() {
+    return `${navbarHTML('karyawan')}
+    <div class="page">
+        <div class="dash-greeting">
+            <h2>Halo, ${currentUser.username} 👋</h2>
+            <p>Akses menu yang tersedia untukmu</p>
+        </div>
+        <div class="menu-grid">
+            <div class="menu-card" data-view="stokView">
+                <div class="menu-card-icon"><i class="fas fa-cubes"></i></div>
+                <div class="menu-card-title">Stok Barang</div>
+            </div>
+        </div>
+        <div style="margin-top:20px; padding:24px; background:var(--surface); border:1px solid var(--border); border-radius:var(--r-xl); text-align:center; color:var(--muted); font-size:0.85rem;">
+            <i class="fas fa-lock" style="margin-bottom:8px; display:block; font-size:1.5rem; color:var(--subtle);"></i>
+            Menu lainnya hanya dapat diakses oleh owner
+        </div>
+    </div>`;
+}
+
+function renderStok(isOwner) {
+    const colCount = isOwner ? 7 : 6;
+    return `${navbarHTML(currentUser?.role)}
+    <div class="page">
+        <div class="back-btn" id="backBtn"><i class="fas fa-arrow-left"></i> Dashboard</div>
+        <div class="card">
+            <div class="card-head">
+                <h3><div class="head-icon"><i class="fas fa-warehouse"></i></div> Manajemen Stok</h3>
+                <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
+                    <div class="search-wrap"><i class="fas fa-search"></i><input type="text" id="searchStokInput" placeholder="Cari produk..."></div>
+                    <button id="addBarangBtn" class="btn btn-green"><i class="fas fa-plus"></i> Tambah Barang</button>
                 </div>
-            `).join('')}`;
-        }
-        // Event listener untuk klik notifikasi
-        document.querySelectorAll('#floatingNotificationPanel .notification-item').forEach(el => {
-            el.addEventListener('click', (e) => {
-                e.stopPropagation();
-                const notifId = parseInt(el.dataset.id);
-                const barangId = el.dataset.barangId;
-                markNotificationAsRead(notifId);
-                const panelEl = document.getElementById("floatingNotificationPanel");
-                if(panelEl) panelEl.classList.remove("show");
-                notificationPanelOpen = false;
-                if(barangId && barangId !== 'null' && barangId !== '') {
-                    currentView = "stokView";
-                    render();
-                    setTimeout(() => {
-                        const barang = store.inventory.find(i => i.id == barangId);
-                        if(barang) {
-                            const rows = document.querySelectorAll('#stokTbody tr');
-                            for(let row of rows) {
-                                if(row.innerText.includes(barang.nama)) {
-                                    row.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                                    row.style.backgroundColor = '#fef3c7';
-                                    setTimeout(() => { row.style.backgroundColor = ''; }, 2000);
-                                    break;
-                                }
+            </div>
+            <div class="tbl-wrap">
+                <table class="tbl">
+                    <thead>
+                        <tr>
+                            <th>Produk</th>
+                            <th>Stok</th>
+                            <th>Harga Jual</th>
+                            <th>Modal Rata-rata</th>
+                            <th>Aksi Stok</th>
+                            <th>Update Modal / Harga</th>
+                            ${isOwner ? '<th>Hapus</th>' : ''}
+                        </tr>
+                    </thead>
+                    <tbody id="stokTbody"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>`;
+}
+
+function renderUangMasuk() {
+    return `${navbarHTML(currentUser?.role)}
+    <div class="page">
+        <div class="back-btn" id="backBtn"><i class="fas fa-arrow-left"></i> Dashboard</div>
+        <div class="card">
+            <div class="card-head">
+                <h3><div class="head-icon"><i class="fas fa-coins"></i></div> Uang Masuk</h3>
+                <button id="resetUangMasukBtn" class="btn btn-red"><i class="fas fa-trash-alt"></i> Reset Semua</button>
+            </div>
+            <div style="padding:24px 28px; border-bottom:1px solid var(--border-light);">
+                <p class="section-title">Catat Pemasukan Baru</p>
+                <div class="inline-form">
+                    <div class="field-group">
+                        <label class="field-label">Nominal (Rp)</label>
+                        <input type="number" id="jumlahUM" class="field-input" placeholder="Contoh: 500000">
+                    </div>
+                    <div class="field-group">
+                        <label class="field-label">Tanggal</label>
+                        <input type="date" id="tglUM" class="field-input">
+                    </div>
+                    <button id="tambahUMBtn" class="btn btn-blue" style="flex-shrink:0;"><i class="fas fa-plus"></i> Simpan</button>
+                </div>
+            </div>
+            <div style="padding:24px 28px;">
+                <p class="section-title">Riwayat Transaksi</p>
+                <div id="daftarUangMasuk"></div>
+            </div>
+        </div>
+    </div>`;
+}
+
+function renderProfit() {
+    return `${navbarHTML(currentUser?.role)}
+    <div class="page">
+        <div class="back-btn" id="backBtn"><i class="fas fa-arrow-left"></i> Dashboard</div>
+        <div class="card">
+            <div class="card-head">
+                <h3><div class="head-icon"><i class="fas fa-chart-line"></i></div> Profit Mingguan</h3>
+                <button id="generateProfitBtn" class="btn btn-blue"><i class="fas fa-calculator"></i> Generate Laporan</button>
+            </div>
+            <div id="profitArea" style="padding:24px 28px; color:var(--muted); font-size:0.85rem; text-align:center;">
+                <i class="fas fa-chart-bar" style="font-size:2rem; display:block; margin-bottom:12px; color:var(--subtle);"></i>
+                Klik "Generate Laporan" untuk melihat perhitungan profit
+            </div>
+        </div>
+        <div class="card" style="margin-top:20px;">
+            <div class="card-head">
+                <h3><div class="head-icon"><i class="fas fa-sliders-h"></i></div> Biaya Operasional Mingguan</h3>
+            </div>
+            <div style="padding:24px 28px;">
+                <div class="inline-form">
+                    <div class="field-group">
+                        <label class="field-label">Biaya Konsumsi (Rp)</label>
+                        <input type="number" id="konsumsiInput" class="field-input" value="${store.biayaKonsumsi}">
+                    </div>
+                    <div class="field-group">
+                        <label class="field-label">Biaya Operasional (Rp)</label>
+                        <input type="number" id="operasionalInput" class="field-input" value="${store.biayaOperasional}">
+                    </div>
+                    <button id="setBiayaBtn" class="btn btn-ghost" style="flex-shrink:0;"><i class="fas fa-save"></i> Simpan</button>
+                </div>
+            </div>
+        </div>
+    </div>`;
+}
+
+function renderModal() {
+    let grandTotal = 0;
+    const rows = store.inventory.map(item => {
+        const tot = item.stock * item.averageCost;
+        grandTotal += tot;
+        return `<tr>
+            <td><div class="td-product"><div class="td-product-dot"></div>${item.nama}</div></td>
+            <td>Rp ${item.averageCost.toLocaleString('id-ID')}</td>
+            <td>${item.stock}</td>
+            <td><span class="chip chip-blue">Rp ${tot.toLocaleString('id-ID')}</span></td>
+        </tr>`;
+    }).join("");
+
+    return `${navbarHTML('owner')}
+    <div class="page">
+        <div class="back-btn" id="backBtn"><i class="fas fa-arrow-left"></i> Dashboard</div>
+        <div class="card">
+            <div class="card-head">
+                <h3><div class="head-icon"><i class="fas fa-hand-holding-usd"></i></div> Total Modal (Average Cost)</h3>
+            </div>
+            <div class="tbl-wrap">
+                <table class="tbl">
+                    <thead>
+                        <tr>
+                            <th>Nama Barang</th>
+                            <th>Modal Rata-rata / Unit</th>
+                            <th>Stok</th>
+                            <th>Total Modal</th>
+                        </tr>
+                    </thead>
+                    <tbody>${rows}</tbody>
+                </table>
+            </div>
+            <div class="modal-grand">
+                <div class="label">Total Keseluruhan Modal</div>
+                <div class="value">Rp ${grandTotal.toLocaleString('id-ID')}</div>
+            </div>
+        </div>
+    </div>`;
+}
+
+function renderLog() {
+    const logs = store.activityLogs.slice(0, 100).map(l => `
+        <div class="log-item">
+            <div class="log-avatar"><i class="fas fa-${l.username === 'system' ? 'robot' : 'user'}"></i></div>
+            <div class="log-content">
+                <div class="log-user">${l.username}</div>
+                <div class="log-action">${l.action}</div>
+                <div class="log-time">${l.timestamp}</div>
+            </div>
+        </div>
+    `).join('');
+
+    return `${navbarHTML('owner')}
+    <div class="page">
+        <div class="back-btn" id="backBtn"><i class="fas fa-arrow-left"></i> Dashboard</div>
+        <div class="card">
+            <div class="card-head">
+                <h3><div class="head-icon"><i class="fas fa-history"></i></div> Log Aktivitas</h3>
+            </div>
+            <div style="padding:8px 28px 24px; max-height:560px; overflow-y:auto;">${logs || '<div class="empty-state"><div class="empty-state-icon"><i class="fas fa-history"></i></div><p>Belum ada aktivitas</p></div>'}</div>
+        </div>
+    </div>`;
+}
+
+function renderKaryawan() {
+    const active = store.users.filter(u => u.role === "karyawan" && u.status === "approved");
+    const rows = active.map(k => `
+        <div class="karyawan-row">
+            <div class="karyawan-avatar">${k.username[0].toUpperCase()}</div>
+            <div style="flex:1; font-size:0.88rem; font-weight:500;">${k.username}</div>
+            <span class="chip chip-green"><i class="fas fa-circle" style="font-size:0.5rem;"></i> Aktif</span>
+            <button class="resignBtn btn btn-ghost" data-id="${k.id}" style="font-size:0.72rem; color:var(--red); border-color:#fecaca;">
+                <i class="fas fa-user-minus"></i> Resign
+            </button>
+        </div>
+    `).join('') || `<div class="empty-state"><div class="empty-state-icon"><i class="fas fa-users"></i></div><p>Belum ada karyawan aktif</p></div>`;
+
+    return `${navbarHTML('owner')}
+    <div class="page">
+        <div class="back-btn" id="backBtn"><i class="fas fa-arrow-left"></i> Dashboard</div>
+        <div class="card">
+            <div class="card-head">
+                <h3><div class="head-icon"><i class="fas fa-users"></i></div> Manajemen Karyawan</h3>
+                <button id="showApprovalBtn" class="btn btn-amber"><i class="fas fa-user-check"></i> Persetujuan (${store.pendingRegistrations.length})</button>
+            </div>
+            <div style="padding:20px 28px;">
+                <p class="section-title">Karyawan Aktif</p>
+                ${rows}
+            </div>
+        </div>
+        <div id="pendingModal" style="display:none;"></div>
+    </div>`;
+}
+
+// ─── FLOATING NOTIFICATION ───
+function renderFloatingNotification() {
+    const count = getUnreadCount();
+    return `<div class="floating-notif">
+        <div class="notif-fab" id="floatingNotifBtn">
+            <i class="fas fa-bell"></i>
+            ${count > 0 ? `<span class="notif-count">${count > 9 ? '9+' : count}</span>` : ''}
+        </div>
+        <div id="floatingNotificationPanel" class="notif-panel"></div>
+    </div>`;
+}
+
+function renderNotificationPanel() {
+    const panel = document.getElementById("floatingNotificationPanel");
+    if (!panel) return;
+    const count = getUnreadCount();
+    if (store.notifications.length === 0) {
+        panel.innerHTML = `<div class="notif-panel-head"><span>Notifikasi</span></div><div class="notif-empty"><i class="fas fa-bell-slash" style="font-size:2rem; color:var(--subtle); display:block; margin-bottom:8px;"></i>Tidak ada notifikasi</div>`;
+    } else {
+        panel.innerHTML = `
+            <div class="notif-panel-head">
+                <span>Notifikasi</span>
+                ${count > 0 ? `<span class="chip chip-blue">${count} baru</span>` : ''}
+            </div>
+            <div class="notif-list">
+                ${store.notifications.map(n => `
+                    <div class="notif-item ${!n.read ? 'unread' : ''}" data-id="${n.id}" data-barang-id="${n.barangId || ''}">
+                        <div class="notif-dot"></div>
+                        <div class="notif-info">
+                            <div class="notif-title">${n.title}</div>
+                            <div class="notif-msg">${n.message}</div>
+                            <div class="notif-ts">${n.timestamp}</div>
+                        </div>
+                    </div>
+                `).join('')}
+            </div>`;
+    }
+
+    document.querySelectorAll('#floatingNotificationPanel .notif-item').forEach(el => {
+        el.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const notifId = parseInt(el.dataset.id);
+            const barangId = el.dataset.barangId;
+            markNotificationAsRead(notifId);
+            const panelEl = document.getElementById("floatingNotificationPanel");
+            if (panelEl) panelEl.classList.remove("open");
+            notifOpen = false;
+            if (barangId && barangId !== 'null' && barangId !== '') {
+                currentView = "stokView";
+                render();
+                setTimeout(() => {
+                    const barang = store.inventory.find(i => i.id == barangId);
+                    if (barang) {
+                        const rows = document.querySelectorAll('#stokTbody tr');
+                        for (let row of rows) {
+                            if (row.innerText.includes(barang.nama)) {
+                                row.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                                row.classList.add('row-highlighted');
+                                setTimeout(() => row.classList.remove('row-highlighted'), 1500);
+                                break;
                             }
                         }
-                    }, 100);
-                }
-            });
+                    }
+                }, 100);
+            }
         });
+    });
+}
+
+// ─── MAIN RENDER ───
+function render() {
+    const app = document.getElementById("app");
+    if (!currentUser) {
+        app.innerHTML = currentView === "register" ? renderRegister() : renderLogin();
+    } else {
+        if (currentUser.role === "owner") {
+            if (currentView === "stokView") app.innerHTML = renderStok(true);
+            else if (currentView === "uangMasukView") app.innerHTML = renderUangMasuk();
+            else if (currentView === "profitView") app.innerHTML = renderProfit();
+            else if (currentView === "modalView") app.innerHTML = renderModal();
+            else if (currentView === "logActivityView") app.innerHTML = renderLog();
+            else if (currentView === "listKaryawanView") app.innerHTML = renderKaryawan();
+            else app.innerHTML = renderOwnerDashboard();
+        } else {
+            if (currentView === "stokView") app.innerHTML = renderStok(false);
+            else app.innerHTML = renderKaryawanDashboard();
+        }
     }
-    
-    function renderUangMasuk() {
-        return `<div class="top-navbar"><div class="navbar-container"><div class="logo-area"><div class="logo-icon"><i class="fas fa-boxes"></i></div><span class="logo-text">Stok KKP</span></div><div class="nav-right"><span class="role-badge">${currentUser?.role === "owner" ? "Owner" : "Karyawan"}</span><button id="logoutBtn" class="btn-logout"><i class="fas fa-sign-out-alt"></i> Keluar</button></div></div></div>
-        <div class="main-content"><div class="back-button" id="backBtn"><i class="fas fa-arrow-left"></i> Kembali</div>
-        <div class="card-modern"><div class="card-header"><h3><i class="fas fa-coins"></i> Pemasukan</h3><button id="resetUangMasukBtn" class="btn-sm btn-danger"><i class="fas fa-trash-alt"></i> Reset Semua</button></div>
-        <div style="padding:24px;"><div class="flex-between" style="margin-bottom:28px;"><input type="number" id="jumlahUM" placeholder="Nominal (Rp)" style="flex:2"><input type="date" id="tglUM" style="flex:1"><button id="tambahUMBtn" class="btn-sm btn-primary">Input</button></div>
-        <h4 style="margin-bottom:16px;">Riwayat Transaksi</h4><div id="daftarUangMasuk" style="max-height:380px; overflow-y:auto;"></div></div></div></div>`;
+    attachEvents();
+
+    // Floating notif
+    if (currentUser) {
+        const existing = document.querySelector('.floating-notif');
+        if (existing) existing.remove();
+        document.body.insertAdjacentHTML('beforeend', renderFloatingNotification());
+        initFloatingNotification();
+        renderNotificationPanel();
     }
-    
-    function renderProfit() {
-        return `<div class="top-navbar"><div class="navbar-container"><div class="logo-area"><div class="logo-icon"><i class="fas fa-boxes"></i></div><span class="logo-text">Stok KKP</span></div><div class="nav-right"><span class="role-badge">${currentUser?.role === "owner" ? "Owner" : "Karyawan"}</span><button id="logoutBtn" class="btn-logout"><i class="fas fa-sign-out-alt"></i> Keluar</button></div></div></div>
-        <div class="main-content"><div class="back-button" id="backBtn"><i class="fas fa-arrow-left"></i> Kembali</div>
-        <div class="card-modern"><div class="card-header"><h3><i class="fas fa-chart-line"></i> Profit Perminggu</h3><button id="generateProfitBtn" class="btn-sm btn-primary">Generate Laporan</button></div><div id="profitArea" style="padding:24px;"></div></div>
-        <div class="card-modern" style="margin-top:24px;"><div class="card-header"><h3>Biaya Operasional Mingguan</h3></div><div style="padding:24px;"><div class="flex-between"><div style="flex:1"><label>Konsumsi</label><input type="number" id="konsumsiInput" value="${store.biayaKonsumsi}"></div><div style="flex:1"><label>Operasional</label><input type="number" id="operasionalInput" value="${store.biayaOperasional}"></div><button id="setBiayaBtn" class="btn-sm btn-outline">Simpan</button></div></div></div></div>`;
-    }
-    
-    function renderModal() {
-        let grandTotal = 0;
-        const modalRows = store.inventory.map(item => { const tot = item.stock * item.averageCost; grandTotal += tot; return `<tr><td class="product-name"><i class="fas fa-cube"></i> ${item.nama}</td><td>Rp ${item.averageCost.toLocaleString()}</td><td>${item.stock}</td><td class="badge-cost">Rp ${tot.toLocaleString()}</td></tr>`; }).join("");
-        return `<div class="top-navbar"><div class="navbar-container"><div class="logo-area"><div class="logo-icon"><i class="fas fa-boxes"></i></div><span class="logo-text">Stok KKP</span></div><div class="nav-right"><span class="role-badge">Owner</span><button id="logoutBtn" class="btn-logout"><i class="fas fa-sign-out-alt"></i> Keluar</button></div></div></div>
-        <div class="main-content"><div class="back-button" id="backBtn"><i class="fas fa-arrow-left"></i> Kembali</div>
-        <div class="card-modern"><div class="card-header"><h3><i class="fas fa-hand-holding-usd"></i> Total Modal (Average Cost)</h3></div><div class="table-container"><table class="stock-table"><thead><tr><th>Nama Barang</th><th>Modal Rata-rata</th><th>Stok</th><th>Total Modal</th></thead><tbody>${modalRows}</tbody><tr></div><div id="totalModalAll" style="padding:24px; text-align:right; font-weight:800; font-size:1.3rem;">Total Keseluruhan Modal: Rp ${grandTotal.toLocaleString()}</div></div></div>`;
-    }
-    
-    function renderLog() {
-        return `<div class="top-navbar"><div class="navbar-container"><div class="logo-area"><div class="logo-icon"><i class="fas fa-boxes"></i></div><span class="logo-text">Stok KKP</span></div><div class="nav-right"><span class="role-badge">Owner</span><button id="logoutBtn" class="btn-logout"><i class="fas fa-sign-out-alt"></i> Keluar</button></div></div></div>
-        <div class="main-content"><div class="back-button" id="backBtn"><i class="fas fa-arrow-left"></i> Kembali</div>
-        <div class="card-modern"><div class="card-header"><h3><i class="fas fa-history"></i> Log Aktivitas</h3></div><div id="logContainer" style="padding:24px; max-height:500px; overflow-y:auto;"></div></div></div>`;
-    }
-    
-    function renderKaryawan() {
-        const active = store.users.filter(u=>u.role==="karyawan" && u.status==="approved");
-        return `<div class="top-navbar"><div class="navbar-container"><div class="logo-area"><div class="logo-icon"><i class="fas fa-boxes"></i></div><span class="logo-text">Stok KKP</span></div><div class="nav-right"><span class="role-badge">Owner</span><button id="logoutBtn" class="btn-logout"><i class="fas fa-sign-out-alt"></i> Keluar</button></div></div></div>
-        <div class="main-content"><div class="back-button" id="backBtn"><i class="fas fa-arrow-left"></i> Kembali</div>
-        <div class="card-modern"><div class="card-header"><h3>Manajemen Karyawan</h3><button id="showApprovalBtn" class="btn-sm btn-warning"><i class="fas fa-user-check"></i> Persetujuan (${store.pendingRegistrations.length})</button></div><div style="padding:24px;"><h4 style="margin-bottom:16px;">Karyawan Aktif</h4><div class="table-container"><table class="stock-table"><thead><tr><th>Username</th><th>Aksi</th></thead><tbody>${active.map(k=>`<tr><td>${k.username}</td><td><button class="resignBtn btn-sm btn-danger" data-id="${k.id}">Resign</button></td></tr>`).join("")}</tbody></table></div></div></div><div id="pendingModal" style="display:none;"></div></div>`;
+}
+
+// ─── EVENT HANDLERS ───
+function attachEvents() {
+    // AUTH
+    document.getElementById("btnLogin")?.addEventListener("click", () => {
+        const u = document.getElementById("loginUser").value, p = document.getElementById("loginPass").value;
+        const found = store.users.find(u2 => u2.username === u && u2.password === p && u2.status === "approved");
+        if (found) { currentUser = found; currentView = "dashboardOwner"; addActivity(found.username, "Login ke sistem"); checkAndNotifyLowStock(); render(); }
+        else toast("Akun tidak ditemukan / belum disetujui");
+    });
+    document.getElementById("loginPass")?.addEventListener("keydown", e => { if(e.key==="Enter") document.getElementById("btnLogin")?.click(); });
+    document.getElementById("gotoReg")?.addEventListener("click", e => { e.preventDefault(); currentView = "register"; render(); });
+    document.getElementById("gotoLogin")?.addEventListener("click", e => { e.preventDefault(); currentView = "login"; render(); });
+    document.getElementById("btnReg")?.addEventListener("click", () => {
+        const u = document.getElementById("regUser").value.trim(), p = document.getElementById("regPass").value, c = document.getElementById("regConfirm").value;
+        if (!u || !p) return toast("Lengkapi semua data");
+        if (p !== c) return toast("Password tidak cocok");
+        if (store.users.find(x => x.username === u) || store.pendingRegistrations.find(x => x.username === u)) return toast("Username sudah ada");
+        store.pendingRegistrations.push({ id: Date.now(), username: u, password: p });
+        saveStore();
+        addActivity("system", `Pendaftaran baru: ${u}`);
+        addNotification("Pendaftaran Baru", `Karyawan baru "${u}" mendaftar, segera approve!`, "info");
+        toast("Pendaftaran terkirim, menunggu owner");
+        currentView = "login"; render();
+    });
+    document.getElementById("logoutBtn")?.addEventListener("click", () => { currentUser = null; render(); });
+    document.getElementById("backBtn")?.addEventListener("click", () => {
+        currentView = currentUser?.role === "owner" ? "dashboardOwner" : "dashboardKaryawan";
+        render();
+    });
+
+    document.querySelectorAll(".menu-card").forEach(c => c.addEventListener("click", () => {
+        const v = c.getAttribute("data-view");
+        if (v) { currentView = v; render(); }
+    }));
+
+    // STOK
+    if (currentView === "stokView") {
+        const searchInput = document.getElementById("searchStokInput");
+        const tbody = document.getElementById("stokTbody");
+        const isOwner = currentUser?.role === "owner";
+
+        const renderStokTable = (searchTerm = "") => {
+            const filtered = store.inventory.filter(i => i.nama.toLowerCase().includes(searchTerm.toLowerCase()));
+            if (!tbody) return;
+            if (filtered.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="${isOwner ? 7 : 6}">
+                    <div class="empty-state">
+                        <div class="empty-state-icon"><i class="fas fa-search"></i></div>
+                        <p>Barang tidak ditemukan</p>
+                        <small>Coba dengan kata kunci lain</small>
+                    </div>
+                </td></tr>`;
+            } else {
+                tbody.innerHTML = filtered.map(item => `
+                    <tr>
+                        <td><div class="td-product"><div class="td-product-dot"></div>${item.nama}</div></td>
+                        <td>${item.stock <= 5 ? `<span class="stock-critical"><i class="fas fa-exclamation-triangle"></i> ${item.stock} hampir habis</span>` : `<strong>${item.stock}</strong>`}</td>
+                        <td>Rp ${item.hargaJual.toLocaleString('id-ID')}</td>
+                        <td><span class="chip chip-blue">Rp ${item.averageCost.toLocaleString('id-ID')}</span></td>
+                        <td>
+                            <div style="display:flex;gap:6px;flex-wrap:wrap;">
+                                <button class="tambahStokBtn btn btn-green" data-id="${item.id}"><i class="fas fa-plus"></i> Tambah</button>
+                                <button class="kurangiStokBtn btn btn-amber" data-id="${item.id}"><i class="fas fa-minus"></i> Kurang</button>
+                            </div>
+                        </td>
+                        <td>
+                            <div style="display:flex;gap:6px;flex-wrap:wrap;">
+                                <button class="updateModalBtn btn btn-blue" data-id="${item.id}"><i class="fas fa-chart-line"></i> Modal</button>
+                                <button class="editHargaJualBtn btn btn-ghost" data-id="${item.id}"><i class="fas fa-tag"></i> Harga</button>
+                            </div>
+                        </td>
+                        ${isOwner ? `<td><button class="hapusBarangBtn btn btn-red" data-id="${item.id}" data-nama="${item.nama}"><i class="fas fa-trash"></i></button></td>` : ''}
+                    </tr>
+                `).join('');
+
+                document.querySelectorAll(".tambahStokBtn").forEach(btn => {
+                    btn.addEventListener("click", () => {
+                        const item = store.inventory.find(i => i.id === parseInt(btn.dataset.id));
+                        const qty = parseInt(prompt(`Tambah stok ${item.nama}:`, "1"));
+                        if (qty > 0) { item.stock += qty; addActivity(currentUser.username, `Tambah stok ${item.nama} +${qty}`); saveStore(); checkAndNotifyLowStock(); toast(`Stok +${qty}`); render(); }
+                    });
+                });
+                document.querySelectorAll(".kurangiStokBtn").forEach(btn => {
+                    btn.addEventListener("click", () => {
+                        const item = store.inventory.find(i => i.id === parseInt(btn.dataset.id));
+                        const qty = parseInt(prompt(`Kurangi stok ${item.nama}:`, "1"));
+                        if (qty > 0 && item.stock >= qty) { item.stock -= qty; addActivity(currentUser.username, `Kurangi stok ${item.nama} -${qty}`); saveStore(); checkAndNotifyLowStock(); toast(`Stok -${qty}`); render(); }
+                        else toast("Stok tidak cukup");
+                    });
+                });
+                document.querySelectorAll(".updateModalBtn").forEach(btn => {
+                    btn.addEventListener("click", () => {
+                        const item = store.inventory.find(i => i.id === parseInt(btn.dataset.id));
+                        const qty = parseInt(prompt(`Jumlah beli untuk update modal ${item.nama}:`, "5"));
+                        if (qty > 0) {
+                            const price = parseFloat(prompt(`Harga beli per unit (Rp):`, item.averageCost));
+                            if (price > 0) { updateAverageCost(item, qty, price); toast(`Modal update! Rata-rata baru Rp ${item.averageCost.toLocaleString('id-ID')}`); render(); }
+                        }
+                    });
+                });
+                document.querySelectorAll(".editHargaJualBtn").forEach(btn => {
+                    btn.addEventListener("click", () => {
+                        const item = store.inventory.find(i => i.id === parseInt(btn.dataset.id));
+                        const newJual = parseFloat(prompt(`Harga jual baru ${item.nama}:`, item.hargaJual));
+                        if (newJual > 0) { item.hargaJual = newJual; addActivity(currentUser.username, `Ubah harga jual ${item.nama} → Rp ${newJual.toLocaleString('id-ID')}`); saveStore(); toast("Harga jual diupdate"); render(); }
+                    });
+                });
+                document.querySelectorAll(".hapusBarangBtn").forEach(btn => {
+                    btn.addEventListener("click", () => hapusBarang(parseInt(btn.dataset.id), btn.dataset.nama));
+                });
+            }
+        };
+
+        renderStokTable();
+        searchInput?.addEventListener("input", e => renderStokTable(e.target.value));
+        document.getElementById("addBarangBtn")?.addEventListener("click", () => {
+            const nama = prompt("Nama produk:");
+            const hargaJual = parseFloat(prompt("Harga jual:"));
+            const stok = parseInt(prompt("Stok awal:"));
+            const modal = parseFloat(prompt("Modal awal per unit:"));
+            if (nama && !isNaN(hargaJual) && !isNaN(stok) && !isNaN(modal)) {
+                store.inventory.push({ id: Date.now(), nama, stock: stok, hargaJual, averageCost: modal });
+                saveStore();
+                addActivity(currentUser.username, `Tambah produk: ${nama}`);
+                checkAndNotifyLowStock();
+                toast("Produk ditambahkan");
+                render();
+            }
+        });
     }
 
-    // ========== EVENT HANDLER ==========
-    function attachEvents() {
-        // Auth
-        document.getElementById("btnLogin")?.addEventListener("click",()=>{ 
-            const u=document.getElementById("loginUser").value, p=document.getElementById("loginPass").value; 
-            const found=store.users.find(u2=>u2.username===u && u2.password===p && u2.status==="approved"); 
-            if(found){ currentUser=found; currentView="dashboardOwner"; addActivity(found.username,"Login ke sistem"); checkAndNotifyLowStock(); render(); } 
-            else toast("Akun tidak ditemukan / belum disetujui"); 
+    // UANG MASUK
+    if (currentView === "uangMasukView") {
+        const umDiv = document.getElementById("daftarUangMasuk");
+        if (umDiv) {
+            if (store.uangMasukList.length === 0) {
+                umDiv.innerHTML = `<div class="empty-state"><div class="empty-state-icon"><i class="fas fa-coins"></i></div><p>Belum ada pemasukan</p></div>`;
+            } else {
+                umDiv.innerHTML = store.uangMasukList.map(um => `
+                    <div class="txn-item">
+                        <div class="txn-icon"><i class="fas fa-arrow-down"></i></div>
+                        <div class="txn-meta">
+                            <div class="txn-amount">Rp ${um.jumlah.toLocaleString('id-ID')}</div>
+                            <div class="txn-label">${um.keterangan}</div>
+                        </div>
+                        <div class="txn-date">${um.tanggal}</div>
+                    </div>
+                `).join('');
+            }
+        }
+        document.getElementById("tambahUMBtn")?.addEventListener("click", () => {
+            const jumlah = parseFloat(document.getElementById("jumlahUM").value);
+            const tanggal = document.getElementById("tglUM").value || new Date().toISOString().slice(0, 10);
+            if (jumlah > 0) { store.uangMasukList.push({ id: Date.now(), jumlah, tanggal, keterangan: "Pemasukan tunai" }); saveStore(); addActivity(currentUser.username, `Pemasukan Rp ${jumlah.toLocaleString('id-ID')}`); toast("Pemasukan dicatat"); render(); }
+            else toast("Nominal tidak valid");
         });
-        document.getElementById("gotoReg")?.addEventListener("click",(e)=>{e.preventDefault(); currentView="register"; render();});
-        document.getElementById("gotoLogin")?.addEventListener("click",(e)=>{e.preventDefault(); currentView="login"; render();});
-        document.getElementById("btnReg")?.addEventListener("click",()=>{ 
-            const u=document.getElementById("regUser").value.trim(), p=document.getElementById("regPass").value, c=document.getElementById("regConfirm").value; 
-            if(!u||!p) return toast("Lengkapi data"); 
-            if(p!==c) return toast("Password tidak cocok"); 
-            if(store.users.find(x=>x.username===u)||store.pendingRegistrations.find(x=>x.username===u)) return toast("Username sudah ada"); 
-            store.pendingRegistrations.push({id:Date.now(), username:u, password:p}); 
-            saveStore(); 
-            addActivity("system",`Pendaftaran baru: ${u}`); 
-            addNotification("Pendaftaran Baru", `Karyawan baru "${u}" mendaftar, segera approve!`, "info");
-            toast("Pendaftaran terkirim, menunggu owner"); 
-            currentView="login"; render(); 
-        });
-        document.getElementById("logoutBtn")?.addEventListener("click",()=>{ currentUser=null; render(); });
-        document.getElementById("backBtn")?.addEventListener("click",()=>{ 
-            if(currentUser?.role==="owner") currentView="dashboardOwner"; 
-            else currentView="dashboardKaryawan"; 
-            render(); 
-        });
-        document.querySelectorAll(".menu-item").forEach(c=>c.addEventListener("click",()=>{ 
-            const v=c.getAttribute("data-view"); 
-            if(v) currentView=v; 
-            render(); 
-        }));
-        
-        // STOK dengan search pintar dan pesan "Barang tidak ditemukan"
-        if(currentView === "stokView") {
-            const searchInput = document.getElementById("searchStokInput");
-            const tbody = document.getElementById("stokTbody");
-            const renderStokTable = (searchTerm="") => {
-                const filtered = store.inventory.filter(i=> i.nama.toLowerCase().includes(searchTerm.toLowerCase()));
-                const isOwner = currentUser?.role === "owner";
-                if(tbody) {
-                    if(filtered.length === 0) {
-                        tbody.innerHTML = `<tr><td colspan="${isOwner ? 7 : 6}" class="empty-search"><i class="fas fa-search"></i>Barang tidak ditemukan<br><span style="font-size:0.8rem;">Coba dengan kata kunci lain</span></td></tr>`;
-                    } else {
-                        tbody.innerHTML = filtered.map(item => `
-                            <tr>
-                                <td class="product-name"><i class="fas fa-tag"></i> ${item.nama}</td>
-                                <td>${item.stock <= 5 ? `<span class="stock-low"><i class="fas fa-exclamation-triangle"></i> ${item.stock} (Hampir Habis)</span>` : item.stock}</td>
-                                <td>Rp ${item.hargaJual.toLocaleString()}</td>
-                                <td><span class="badge-cost">Rp ${item.averageCost.toLocaleString()}</span></td>
-                                <td><div class="btn-group"><button class="tambahStokBtn btn-sm btn-success" data-id="${item.id}"><i class="fas fa-plus"></i> Tambah</button><button class="kurangiStokBtn btn-sm btn-warning" data-id="${item.id}"><i class="fas fa-minus"></i> Kurang</button></div></td>
-                                <td><div class="btn-group"><button class="updateModalBtn btn-sm btn-primary" data-id="${item.id}"><i class="fas fa-chart-line"></i> Update Modal</button><button class="editHargaJualBtn btn-sm btn-secondary" data-id="${item.id}"><i class="fas fa-tag"></i> Harga Jual</button></div></td>
-                                ${isOwner ? `<td><button class="hapusBarangBtn btn-sm btn-danger" data-id="${item.id}" data-nama="${item.nama}"><i class="fas fa-trash"></i> Hapus</button></td>` : ''}
-                            </tr>
-                        `).join("");
-                        
-                        // Attach events untuk tombol
-                        document.querySelectorAll(".tambahStokBtn").forEach(btn=>{ btn.addEventListener("click",()=>{ const id=parseInt(btn.dataset.id); const item=store.inventory.find(i=>i.id===id); const qty=parseInt(prompt(`Tambah stok ${item.nama}:`,"1")); if(qty>0){ item.stock+=qty; addActivity(currentUser.username,`Tambah stok ${item.nama} +${qty}`); saveStore(); checkAndNotifyLowStock(); toast(`Stok +${qty}`); render(); } }); });
-                        document.querySelectorAll(".kurangiStokBtn").forEach(btn=>{ btn.addEventListener("click",()=>{ const id=parseInt(btn.dataset.id); const item=store.inventory.find(i=>i.id===id); const qty=parseInt(prompt(`Kurangi stok ${item.nama}:`,"1")); if(qty>0 && item.stock>=qty){ item.stock-=qty; addActivity(currentUser.username,`Kurangi stok ${item.nama} -${qty}`); saveStore(); checkAndNotifyLowStock(); toast(`Stok -${qty}`); render(); } else toast("Stok tidak cukup"); }); });
-                        document.querySelectorAll(".updateModalBtn").forEach(btn=>{ btn.addEventListener("click",()=>{ const id=parseInt(btn.dataset.id); const item=store.inventory.find(i=>i.id===id); const qty=parseInt(prompt(`Jumlah beli untuk update modal ${item.nama}:`,"5")); if(qty>0){ const price=parseFloat(prompt(`Harga beli terbaru per unit (Rp):`,item.averageCost)); if(price>0){ updateAverageCost(item,qty,price); toast(`Modal update! Rata-rata baru Rp ${item.averageCost.toLocaleString()}`); render(); } } }); });
-                        document.querySelectorAll(".editHargaJualBtn").forEach(btn=>{ btn.addEventListener("click",()=>{ const id=parseInt(btn.dataset.id); const item=store.inventory.find(i=>i.id===id); const newJual=parseFloat(prompt(`Harga jual baru ${item.nama}:`,item.hargaJual)); if(newJual>0){ item.hargaJual=newJual; addActivity(currentUser.username,`Ubah harga jual ${item.nama} -> Rp ${newJual.toLocaleString()}`); saveStore(); toast("Harga jual diupdate"); render(); } }); });
-                        document.querySelectorAll(".hapusBarangBtn").forEach(btn=>{ btn.addEventListener("click",()=>{ const id=parseInt(btn.dataset.id); const nama=btn.dataset.nama; hapusBarang(id, nama); }); });
-                    }
-                }
-            };
-            renderStokTable();
-            searchInput?.addEventListener("input", (e) => renderStokTable(e.target.value));
-            document.getElementById("addBarangBtn")?.addEventListener("click",()=>{ 
-                const nama=prompt("Nama produk:"); 
-                const hargaJual=parseFloat(prompt("Harga jual:")); 
-                const stok=parseInt(prompt("Stok awal:")); 
-                const modal=parseFloat(prompt("Modal awal per unit:")); 
-                if(nama && !isNaN(hargaJual) && !isNaN(stok) && !isNaN(modal)){ 
-                    store.inventory.push({id:Date.now(), nama, stock:stok, hargaJual, averageCost:modal}); 
-                    saveStore(); 
-                    addActivity(currentUser.username,`Tambah produk: ${nama}`); 
-                    checkAndNotifyLowStock();
-                    toast("Produk ditambahkan"); 
-                    render(); 
-                } 
-            });
-        }
-        
-        // UANG MASUK
-        if(currentView === "uangMasukView") {
-            const umDiv = document.getElementById("daftarUangMasuk");
-            if(umDiv) umDiv.innerHTML = store.uangMasukList.length ? store.uangMasukList.map(um=>`<div class="uang-item"><div><i class="fas fa-money-bill-wave" style="color:#10b981;"></i> <strong>Rp ${um.jumlah.toLocaleString()}</strong></div><div>${um.tanggal}</div><div><span class="badge-cost">${um.keterangan}</span></div></div>`).join("") : "<div style='text-align:center;padding:20px;'>Belum ada pemasukan</div>";
-            document.getElementById("tambahUMBtn")?.addEventListener("click",()=>{ const jumlah=parseFloat(document.getElementById("jumlahUM").value); const tanggal=document.getElementById("tglUM").value||new Date().toISOString().slice(0,10); if(jumlah>0){ store.uangMasukList.push({id:Date.now(), jumlah, tanggal, keterangan:"Pemasukan tunai"}); saveStore(); addActivity(currentUser.username,`Pemasukan Rp ${jumlah.toLocaleString()}`); toast("Pemasukan dicatat"); render(); } else toast("Nominal tidak valid"); });
-            document.getElementById("resetUangMasukBtn")?.addEventListener("click",()=>resetUangMasuk());
-        }
-        
-        // PROFIT
-        if(currentView === "profitView") {
-            document.getElementById("generateProfitBtn")?.addEventListener("click",()=>{ 
-                const totalUM = store.uangMasukList.reduce((a,b)=>a+b.jumlah,0);
-                const profitKotor = totalUM - store.biayaKonsumsi - store.biayaOperasional;
-                const isSunday = (new Date().getDay() === 0);
-                const currentDay = new Date().toLocaleDateString('id-ID', { weekday: 'long' });
-                let html = `<div class="profit-summary"><div class="profit-row"><span>Total Uang Masuk</span><strong>Rp ${totalUM.toLocaleString()}</strong></div><div class="profit-row"><span>Biaya Konsumsi</span><span>Rp ${store.biayaKonsumsi.toLocaleString()}</span></div><div class="profit-row"><span>Biaya Operasional</span><span>Rp ${store.biayaOperasional.toLocaleString()}</span></div>`;
-                if(isSunday) html += `<div class="profit-total-card"><div class="profit-total-number">Rp ${profitKotor.toLocaleString()}</div><div>TOTAL PROFIT (Hari ke-7)</div><div style="font-size:0.7rem;">Rumus: Uang Masuk - Konsumsi - Operasional</div></div>`;
-                else html += `<div class="profit-locked-card"><div class="profit-locked-title">Profit Hanya Dapat Dilihat di Hari ke-7 (Minggu)</div><div>Hari ini: ${currentDay}</div><div style="font-size:0.75rem;">Profit sementara: Rp ${profitKotor.toLocaleString()}</div></div>`;
-                html += `</div>`;
-                document.getElementById("profitArea").innerHTML = html;
-            });
-            document.getElementById("setBiayaBtn")?.addEventListener("click",()=>{ 
-                store.biayaKonsumsi = parseFloat(document.getElementById("konsumsiInput").value) || 0;
-                store.biayaOperasional = parseFloat(document.getElementById("operasionalInput").value) || 0;
-                saveStore();
-                addActivity(currentUser.username, `Update biaya: Konsumsi ${store.biayaKonsumsi.toLocaleString()}, Operasional ${store.biayaOperasional.toLocaleString()}`);
-                toast("Biaya disimpan");
-                render();
-            });
-        }
-        
-        // MODAL
-        if(currentView === "modalView") {
-            // sudah di render
-        }
-        
-        // LOG
-        if(currentView === "logActivityView") {
-            const logDiv = document.getElementById("logContainer");
-            if(logDiv) logDiv.innerHTML = store.activityLogs.slice(0,100).map(l=>`<div style="padding:12px 0; border-bottom:1px solid #eef2ff;"><i class="fas fa-user-circle"></i> <strong>${l.username}</strong> <span style="font-size:0.7rem; color:#64748b;">${l.timestamp}</span><br>${l.action}</div>`).join("");
-        }
-        
-        // KARYAWAN
-        if(currentView === "listKaryawanView") {
-            document.getElementById("showApprovalBtn")?.addEventListener("click",()=>{ const modalDiv=document.getElementById("pendingModal"); if(modalDiv){ if(store.pendingRegistrations.length===0) modalDiv.innerHTML=`<div class="modal-backdrop"><div class="modal-card"><p>Tidak ada pendaftaran baru</p><button id="closeModal" class="btn-sm btn-outline">Tutup</button></div></div>`; else modalDiv.innerHTML=`<div class="modal-backdrop"><div class="modal-card"><h3>Persetujuan Karyawan</h3><div class="table-container"><table class="stock-table"><thead><tr><th>Username</th><th>Aksi</th></thead><tbody>${store.pendingRegistrations.map(p=>`<tr><td>${p.username}</td><td><button class="approveBtn btn-sm btn-success" data-id="${p.id}">Setujui</button> <button class="rejectBtn btn-sm btn-danger" data-id="${p.id}">Tolak</button></td></tr>`).join("")}</tbody></table></div><button id="closeModal" class="btn-sm btn-outline" style="margin-top:16px;">Tutup</button></div></div>`; modalDiv.style.display="block"; document.querySelectorAll(".approveBtn").forEach(btn=>{ btn.addEventListener("click",()=>{ const id=parseInt(btn.dataset.id); const p=store.pendingRegistrations.find(pp=>pp.id===id); if(p){ store.users.push({id:p.id, username:p.username, password:p.password, role:"karyawan", status:"approved"}); store.pendingRegistrations=store.pendingRegistrations.filter(pp=>pp.id!==id); saveStore(); addActivity(currentUser.username,`Menyetujui karyawan: ${p.username}`); addNotification("Karyawan Baru", `${p.username} telah bergabung sebagai karyawan`, "success"); toast("Akun disetujui"); render(); } }); }); document.querySelectorAll(".rejectBtn").forEach(btn=>{ btn.addEventListener("click",()=>{ const id=parseInt(btn.dataset.id); store.pendingRegistrations=store.pendingRegistrations.filter(pp=>pp.id!==id); saveStore(); toast("Pendaftaran ditolak"); render(); }); }); document.getElementById("closeModal")?.addEventListener("click",()=>{ modalDiv.style.display="none"; }); } });
-            document.querySelectorAll(".resignBtn").forEach(btn=>{ btn.addEventListener("click",()=>{ const id=parseInt(btn.dataset.id); const user=store.users.find(u=>u.id===id); if(user && confirm(`Resign ${user.username}?`)){ store.users=store.users.filter(u=>u.id!==id); saveStore(); addActivity(currentUser.username,`Resign karyawan ${user.username}`); toast("Karyawan dihapus"); render(); } }); });
-        }
+        document.getElementById("resetUangMasukBtn")?.addEventListener("click", () => resetUangMasuk());
     }
-    
-    // Floating notification handler - ditambahkan setelah render
-    function initFloatingNotification() {
-        const notifBtn = document.getElementById("floatingNotifBtn");
-        const notifPanel = document.getElementById("floatingNotificationPanel");
-        if(notifBtn && notifPanel) {
-            // Hapus event listener lama untuk menghindari duplikasi
-            const newNotifBtn = notifBtn.cloneNode(true);
-            notifBtn.parentNode.replaceChild(newNotifBtn, notifBtn);
-            
-            newNotifBtn.addEventListener("click", (e) => {
-                e.stopPropagation();
-                const panel = document.getElementById("floatingNotificationPanel");
-                if(panel) {
-                    panel.classList.toggle("show");
-                    notificationPanelOpen = panel.classList.contains("show");
-                    renderNotificationPanel();
-                }
-            });
-            
-            document.addEventListener("click", () => {
-                if(notificationPanelOpen) {
-                    const panel = document.getElementById("floatingNotificationPanel");
-                    if(panel) {
-                        panel.classList.remove("show");
-                        notificationPanelOpen = false;
-                    }
-                }
-            });
-        }
+
+    // PROFIT
+    if (currentView === "profitView") {
+        document.getElementById("generateProfitBtn")?.addEventListener("click", () => {
+            const totalUM = store.uangMasukList.reduce((a, b) => a + b.jumlah, 0);
+            const profitKotor = totalUM - store.biayaKonsumsi - store.biayaOperasional;
+            const isSunday = new Date().getDay() === 0;
+            const currentDay = new Date().toLocaleDateString('id-ID', { weekday: 'long' });
+
+            let html = `<div style="padding:0 4px;">
+                <div class="profit-row"><span class="label"><i class="fas fa-coins" style="color:var(--green); margin-right:8px;"></i>Total Uang Masuk</span><span class="val">Rp ${totalUM.toLocaleString('id-ID')}</span></div>
+                <div class="profit-row"><span class="label"><i class="fas fa-utensils" style="color:var(--amber); margin-right:8px;"></i>Biaya Konsumsi</span><span class="val deduct">- Rp ${store.biayaKonsumsi.toLocaleString('id-ID')}</span></div>
+                <div class="profit-row"><span class="label"><i class="fas fa-tools" style="color:var(--red); margin-right:8px;"></i>Biaya Operasional</span><span class="val deduct">- Rp ${store.biayaOperasional.toLocaleString('id-ID')}</span></div>
+            </div>`;
+
+            if (isSunday) {
+                html += `<div class="profit-result">
+                    <div class="result-label">Total Profit Minggu Ini</div>
+                    <div class="result-num">Rp ${profitKotor.toLocaleString('id-ID')}</div>
+                </div>`;
+            } else {
+                html += `<div class="profit-result locked">
+                    <div class="result-label" style="color:var(--amber);">🔒 Profit dikunci sampai Hari Minggu</div>
+                    <div style="font-size:0.85rem; color:var(--ink-3); margin-top:8px;">Hari ini: <strong>${currentDay}</strong></div>
+                    <div class="result-sub">Sementara: Rp ${profitKotor.toLocaleString('id-ID')}</div>
+                </div>`;
+            }
+
+            document.getElementById("profitArea").innerHTML = html;
+        });
+        document.getElementById("setBiayaBtn")?.addEventListener("click", () => {
+            store.biayaKonsumsi = parseFloat(document.getElementById("konsumsiInput").value) || 0;
+            store.biayaOperasional = parseFloat(document.getElementById("operasionalInput").value) || 0;
+            saveStore();
+            addActivity(currentUser.username, `Update biaya: Konsumsi ${store.biayaKonsumsi.toLocaleString('id-ID')}, Operasional ${store.biayaOperasional.toLocaleString('id-ID')}`);
+            toast("Biaya disimpan");
+            render();
+        });
     }
-    
-    // Override render untuk menambahkan floating notification
-    const originalRender = render;
-    render = function() {
-        originalRender();
-        // Tambahkan floating notification setelah render (untuk semua halaman yang sudah login)
-        if(currentUser) {
-            const existingFloating = document.querySelector('.floating-notif');
-            if(existingFloating) existingFloating.remove();
-            document.body.insertAdjacentHTML('beforeend', renderFloatingNotification());
-            initFloatingNotification();
+
+    // KARYAWAN
+    if (currentView === "listKaryawanView") {
+        document.getElementById("showApprovalBtn")?.addEventListener("click", () => {
+            const modalDiv = document.getElementById("pendingModal");
+            if (!modalDiv) return;
+            if (store.pendingRegistrations.length === 0) {
+                modalDiv.innerHTML = `<div class="modal-backdrop"><div class="modal-box"><h3><i class="fas fa-check-circle" style="color:var(--green); margin-right:8px;"></i>Tidak ada pendaftaran baru</h3><button id="closeModal" class="btn btn-ghost" style="margin-top:16px; width:100%; justify-content:center;">Tutup</button></div></div>`;
+            } else {
+                modalDiv.innerHTML = `<div class="modal-backdrop"><div class="modal-box">
+                    <h3>Persetujuan Karyawan Baru</h3>
+                    <div class="tbl-wrap" style="border-radius:var(--r-md); overflow:hidden; border:1px solid var(--border); margin-bottom:16px;">
+                        <table class="tbl" style="min-width:unset;">
+                            <thead><tr><th>Username</th><th>Aksi</th></tr></thead>
+                            <tbody>${store.pendingRegistrations.map(p => `<tr><td><div class="td-product"><div class="td-product-dot"></div>${p.username}</div></td><td><div style="display:flex;gap:6px;"><button class="approveBtn btn btn-green" data-id="${p.id}"><i class="fas fa-check"></i> Setujui</button><button class="rejectBtn btn btn-red" data-id="${p.id}"><i class="fas fa-times"></i> Tolak</button></div></td></tr>`).join('')}</tbody>
+                        </table>
+                    </div>
+                    <button id="closeModal" class="btn btn-ghost" style="width:100%; justify-content:center;">Tutup</button>
+                </div></div>`;
+            }
+            modalDiv.style.display = "block";
+
+            document.querySelectorAll(".approveBtn").forEach(btn => {
+                btn.addEventListener("click", () => {
+                    const id = parseInt(btn.dataset.id);
+                    const p = store.pendingRegistrations.find(pp => pp.id === id);
+                    if (p) {
+                        store.users.push({ id: p.id, username: p.username, password: p.password, role: "karyawan", status: "approved" });
+                        store.pendingRegistrations = store.pendingRegistrations.filter(pp => pp.id !== id);
+                        saveStore();
+                        addActivity(currentUser.username, `Menyetujui karyawan: ${p.username}`);
+                        addNotification("Karyawan Baru", `${p.username} telah bergabung`, "success");
+                        toast("Akun disetujui");
+                        render();
+                    }
+                });
+            });
+            document.querySelectorAll(".rejectBtn").forEach(btn => {
+                btn.addEventListener("click", () => {
+                    store.pendingRegistrations = store.pendingRegistrations.filter(pp => pp.id !== parseInt(btn.dataset.id));
+                    saveStore();
+                    toast("Pendaftaran ditolak");
+                    render();
+                });
+            });
+            document.getElementById("closeModal")?.addEventListener("click", () => { modalDiv.style.display = "none"; });
+        });
+
+        document.querySelectorAll(".resignBtn").forEach(btn => {
+            btn.addEventListener("click", () => {
+                const id = parseInt(btn.dataset.id);
+                const user = store.users.find(u => u.id === id);
+                if (user && confirm(`Resign ${user.username}?`)) {
+                    store.users = store.users.filter(u => u.id !== id);
+                    saveStore();
+                    addActivity(currentUser.username, `Resign karyawan ${user.username}`);
+                    toast("Karyawan dihapus");
+                    render();
+                }
+            });
+        });
+    }
+}
+
+function initFloatingNotification() {
+    const notifBtn = document.getElementById("floatingNotifBtn");
+    if (!notifBtn) return;
+    const newBtn = notifBtn.cloneNode(true);
+    notifBtn.parentNode.replaceChild(newBtn, notifBtn);
+
+    newBtn.addEventListener("click", e => {
+        e.stopPropagation();
+        const panel = document.getElementById("floatingNotificationPanel");
+        if (panel) {
+            panel.classList.toggle("open");
+            notifOpen = panel.classList.contains("open");
             renderNotificationPanel();
         }
-    };
-    
-    checkAndNotifyLowStock();
-    render();
+    });
+
+    document.addEventListener("click", () => {
+        if (notifOpen) {
+            const panel = document.getElementById("floatingNotificationPanel");
+            if (panel) { panel.classList.remove("open"); notifOpen = false; }
+        }
+    });
+}
+
+checkAndNotifyLowStock();
+render();
 </script>
 </body>
 </html>
